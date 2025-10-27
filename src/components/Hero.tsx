@@ -7,7 +7,7 @@ export default function Hero() {
       
       <div className="absolute inset-0">
         <Image
-          src="/images/hero.jpg" 
+          src="/images/Hero.jpg" 
           alt="Equipe ROTEC em operação de limpeza técnica"
           fill
           priority
