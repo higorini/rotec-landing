@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import type { GalleryImage } from "./types";
 
@@ -16,7 +16,6 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
   const [dragX, setDragX] = useState<number | null>(null);
   const startRef = useRef(0);
 
-  
   const idxRef = useRef(index);
   const lenRef = useRef(photos.length);
   const onIndexRef = useRef(onIndex);
@@ -25,16 +24,15 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
   useEffect(() => { lenRef.current = photos.length; }, [photos.length]);
   useEffect(() => { onIndexRef.current = onIndex; }, [onIndex]);
 
-  const next = () => {
+  const next = useCallback(() => {
     const len = lenRef.current || 1;
     onIndexRef.current((idxRef.current + 1) % len);
-  };
-  const prev = () => {
+  }, []);
+  const prev = useCallback(() => {
     const len = lenRef.current || 1;
     onIndexRef.current((idxRef.current - 1 + len) % len);
-  };
+  }, []);
 
-  
   useEffect(() => {
     if (!open) return;
 
@@ -47,11 +45,13 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
       if (e.key === "ArrowLeft") prev();
     };
 
-    const onWheel = (e: WheelEvent) => {
-      
+    // para resolver o erro de tipo, tipamos explicitamente como EventListener
+    const onWheel: EventListener = (ev) => {
+      const e = ev as WheelEvent;
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
         e.preventDefault();
-        e.deltaX > 0 ? next() : prev();
+        if (e.deltaX > 0) next();
+        else prev();
       }
     };
 
@@ -61,21 +61,20 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
     return () => {
       document.body.style.overflow = prevOverflow;
       document.removeEventListener("keydown", onKey);
-      document.removeEventListener("wheel", onWheel as any);
+      document.removeEventListener("wheel", onWheel);
     };
-  
-  }, [open, onClose]);
+  }, [open, onClose, next, prev]);
 
   if (!open) return null;
   const photo = photos[index];
 
-  
-  const onPointerDown = (e: React.PointerEvent) => {
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    e.currentTarget.setPointerCapture(e.pointerId);
     startRef.current = e.clientX;
     setDragX(0);
   };
-  const onPointerMove = (e: React.PointerEvent) => {
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (dragX === null) return;
     setDragX(e.clientX - startRef.current);
   };
@@ -89,16 +88,15 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
 
   return (
     <div
-      className="fixed inset-0 z-[130] bg-black/80 backdrop-blur-sm"
+      className="fixed inset-0 z-[130] flex items-center justify-center bg-black/80 backdrop-blur-sm"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
     >
-      
       <button
         aria-label="Fechar"
         onClick={onClose}
-        className="absolute top-4 right-4 rounded-full border w-10 h-10 grid place-items-center text-secondary"
+        className="absolute top-4 right-4 rounded-full border w-10 h-10 grid place-items-center text-secondary hover:text-white"
       >
         ✕
       </button>
@@ -106,19 +104,18 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
       <button
         aria-label="Anterior"
         onClick={(e) => { e.stopPropagation(); prev(); }}
-        className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full border w-10 h-10 grid place-items-center text-secondary/90 hover:text-white"
+        className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full border w-10 h-10 grid place-items-center text-secondary hover:text-white"
       >
         ‹
       </button>
       <button
         aria-label="Próxima"
         onClick={(e) => { e.stopPropagation(); next(); }}
-        className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full border w-10 h-10 grid place-items-center text-secondary/90 hover:text-white"
+        className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full border w-10 h-10 grid place-items-center text-secondary hover:text-white"
       >
         ›
       </button>
 
-      
       <div
         className="h-full w-full flex items-center justify-center p-4"
         onClick={(e) => e.stopPropagation()}
@@ -130,8 +127,8 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
         <div
           className="relative max-w-[min(95vw,1200px)] max-h-[85svh] w-full h-full"
           style={{
-            transform: dragX ? `translateX(${dragX}px)` : undefined,
-            transition: dragX ? "none" : "transform .2s",
+            transform: dragX !== null ? `translateX(${dragX}px)` : undefined,
+            transition: dragX !== null ? "none" : "transform .2s",
           }}
         >
           <Image

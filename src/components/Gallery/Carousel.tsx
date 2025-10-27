@@ -1,16 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import type { GalleryImage } from "../Gallery/types";
 
 type Props = {
   photos: GalleryImage[];
-  onOpenLightbox?: (index: number) => void; 
+  onOpenLightbox?: (index: number) => void;
 };
 
 export default function Carousel({ photos, onOpenLightbox }: Props) {
-  
   const [perView, setPerView] = useState(1);
   useEffect(() => {
     const md = window.matchMedia("(min-width:768px)");
@@ -31,13 +30,12 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
   );
   const isDesktop = perView >= 2;
 
-  
   const loop = useMemo(() => [...photos, ...photos, ...photos], [photos]);
   const base = photos.length;
-  const [idx, setIdx] = useState(base); 
+  const [idx, setIdx] = useState(base);
   const trackRef = useRef<HTMLDivElement>(null);
 
-  const normalize = () => {
+  const normalize = useCallback(() => {
     let newIdx = idx;
     if (idx >= base + photos.length) newIdx = idx - photos.length;
     if (idx < base) newIdx = idx + photos.length;
@@ -46,46 +44,47 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
         if (!trackRef.current) return;
         trackRef.current.style.transition = "none";
         setIdx(newIdx);
-        void trackRef.current.offsetHeight; 
+        void trackRef.current.offsetHeight;
         trackRef.current.style.transition = "";
       }, 10);
     }
-  };
+  }, [idx, base, photos.length]);
 
-  const go = (page: number) => setIdx(base + page * perView);
+  const go = useCallback(
+    (page: number) => setIdx(base + page * perView),
+    [base, perView]
+  );
   const pageFromIdx = Math.floor(((idx - base) / perView) % pages + pages) % pages;
-  const next = () => setIdx((v) => v + perView);
-  const prev = () => setIdx((v) => v - perView);
 
-  
-  const pointerDown = useRef(false); 
-  const dragging = useRef(false);    
+  const next = useCallback(() => setIdx((v) => v + perView), [perView]);
+  const prev = useCallback(() => setIdx((v) => v - perView), [perView]);
+
+  const pointerDown = useRef(false);
+  const dragging = useRef(false);
   const startX = useRef(0);
   const deltaX = useRef(0);
 
   const onPointerDown = (e: React.PointerEvent) => {
-    
     if (e.pointerType === "mouse" && e.button !== 0) return;
     pointerDown.current = true;
-    dragging.current = false; 
+    dragging.current = false;
     startX.current = e.clientX;
     deltaX.current = 0;
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
-    if (!pointerDown.current) return; 
+    if (!pointerDown.current) return;
     const dx = e.clientX - startX.current;
     deltaX.current = dx;
 
-    
     if (!dragging.current && Math.abs(dx) > 6) {
       dragging.current = true;
       if (trackRef.current) trackRef.current.style.transition = "none";
-      document.body.style.userSelect = "none"; 
+      document.body.style.userSelect = "none";
     }
 
     if (!dragging.current || !trackRef.current) return;
-    const width = e.currentTarget.clientWidth;
+    const width = (e.currentTarget as HTMLElement).clientWidth;
     const percent = (dx / width) * 100;
     const stepPercent = (100 / perView) * idx;
     trackRef.current.style.transform = `translateX(calc(-${stepPercent}% + ${percent}%))`;
@@ -95,14 +94,13 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
     document.body.style.userSelect = "";
     pointerDown.current = false;
 
-    if (!dragging.current) return; 
+    if (!dragging.current) return;
 
     if (trackRef.current) trackRef.current.style.transition = "transform .3s ease";
     const threshold = 40;
     if (deltaX.current < -threshold) next();
     else if (deltaX.current > threshold) prev();
     else {
-      
       if (trackRef.current) {
         const stepPercent = (100 / perView) * idx;
         trackRef.current.style.transform = `translateX(-${stepPercent}%)`;
@@ -113,7 +111,6 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
     deltaX.current = 0;
   };
 
-  
   useEffect(() => {
     if (!isDesktop) return;
     const onKey = (e: KeyboardEvent) => {
@@ -122,9 +119,8 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [isDesktop]);
+  }, [isDesktop, next, prev]);
 
-  
   useEffect(() => {
     if (!trackRef.current) return;
     const stepPercent = (100 / perView) * idx;
@@ -133,14 +129,13 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
     trackRef.current.style.transform = `translateX(-${stepPercent}%)`;
     const t = setTimeout(normalize, 310);
     return () => clearTimeout(t);
-  }, [idx, perView]); 
+  }, [idx, perView, normalize]);
 
   const basis =
     perView === 4 ? "basis-1/4" : perView === 2 ? "basis-1/2" : "basis-full";
 
   return (
     <div className="relative overflow-visible">
-      
       <div
         className="overflow-hidden rounded-2xl touch-pan-y"
         onPointerDown={onPointerDown}
@@ -149,7 +144,6 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
         onPointerCancel={finishDrag}
         onPointerLeave={finishDrag}
       >
-        
         <div ref={trackRef} className="flex will-change-transform">
           {loop.map((p, i) => {
             const normalized = ((i % photos.length) + photos.length) % photos.length;
@@ -158,16 +152,14 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
                 <button
                   className="relative block w-full overflow-hidden rounded-2xl border bg-secondary shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-hover)] group"
                   onClick={(ev) => {
-                    if (!isDesktop) return;        
-                    if (dragging.current) {         
+                    if (!isDesktop) return;
+                    if (dragging.current) {
                       ev.preventDefault();
                       return;
                     }
                     onOpenLightbox?.(normalized);
                   }}
-                  aria-label={
-                    isDesktop ? `Ampliar imagem: ${p.alt}` : `Imagem`
-                  }
+                  aria-label={isDesktop ? `Ampliar imagem: ${p.alt}` : `Imagem`}
                 >
                   <div className="relative aspect-[4/3] w-full">
                     <Image
@@ -179,8 +171,6 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
                       draggable={false}
                     />
                   </div>
-
-                  
                   {isDesktop && (
                     <div
                       aria-hidden
@@ -198,7 +188,6 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
         </div>
       </div>
 
-      
       <button
         aria-label="Anterior"
         onClick={prev}
@@ -214,7 +203,6 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
         ›
       </button>
 
-      
       <div className="mt-4 flex items-center justify-center gap-2">
         {Array.from({ length: pages }).map((_, i) => (
           <button
@@ -222,9 +210,7 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
             aria-label={`Ir para página ${i + 1}`}
             onClick={() => go(i)}
             className={`h-2 w-2 rounded-full transition ${
-              pageFromIdx === i
-                ? "bg-primary"
-                : "bg-gray-400/50 hover:bg-gray-500/70"
+              pageFromIdx === i ? "bg-primary" : "bg-gray-400/50 hover:bg-gray-500/70"
             }`}
           />
         ))}

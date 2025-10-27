@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 type LicencaKey = "IBAMA" | "CETESB" | "SABESP";
@@ -115,91 +115,5 @@ export default function SectionLicencas() {
             </div>
         </div>
     </section>
-  );
-}
-
-function LicencaModal({
-  id,
-  open,
-  onClose,
-  title,
-  logo,
-  alt,
-  resumo,
-}: {
-  id: string;
-  open: boolean;
-  onClose: () => void;
-  title: string;
-  logo: string;
-  alt: string;
-  resumo: string;
-}) {
-  const closeBtnRef = useRef<HTMLButtonElement | null>(null);
-  const headingId = useId();
-
-  
-  useEffect(() => {
-    if (!open) return;
-    const t = setTimeout(() => closeBtnRef.current?.focus(), 0);
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => {
-      clearTimeout(t);
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [open, onClose]);
-
-  if (!open) return null;
-
-  return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby={headingId}
-      id={id}
-      className="fixed inset-0 z-50 flex items-center justify-center p-6"
-      onMouseDown={(e) => {
-        
-        if (e.target === e.currentTarget) onClose();
-      }}
-    >
-      
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
-
-      
-      <div className="relative z-10 w-full max-w-lg rounded-2xl bg-zinc-950 p-6 ring-1 ring-white/15">
-        <div className="mb-5 flex items-center gap-4">
-          <div className="relative h-12 w-12 shrink-0">
-            <Image
-              src={logo}
-              alt={alt}
-              fill
-              className="object-contain grayscale"
-            />
-          </div>
-          <h4 id={headingId} className="text-xl font-semibold text-white">
-            {title}
-          </h4>
-          <span className="ml-auto text-xs uppercase tracking-widest text-zinc-400">
-            Licença
-          </span>
-        </div>
-
-        <p className="text-zinc-300">{resumo}</p>
-
-        <div className="mt-6 flex items-center justify-end gap-3">
-          <button
-            ref={closeBtnRef}
-            onClick={onClose}
-            className="rounded-lg bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-200 ring-1 ring-white/10 transition hover:bg-zinc-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-400"
-          >
-            Fechar
-          </button>
-        </div>
-      </div>
-    </div>
   );
 }

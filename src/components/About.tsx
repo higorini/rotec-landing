@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
+import { ReactElement } from "react";
 
 type Tab = {
   id: string;
   title: string;
-  content: JSX.Element;
+  content: ReactElement;
 };
 
 export default function AboutTabs() {
@@ -85,7 +86,9 @@ export default function AboutTabs() {
   const [minH, setMinH] = useState<number>(0);
 
   useEffect(() => {
-    const entries = Object.values(contentRefs.current).filter(Boolean) as HTMLDivElement[];
+    const entries = Object.values(contentRefs.current).filter(
+      (el): el is HTMLDivElement => el !== null
+    );
     if (!entries.length) return;
 
     const compute = () => {
@@ -94,12 +97,14 @@ export default function AboutTabs() {
     };
 
     compute();
+
     const roList = entries.map(
       (el) =>
         new ResizeObserver(() => {
           compute();
         })
     );
+
     roList.forEach((ro, i) => ro.observe(entries[i]));
 
     const onResize = () => compute();
@@ -112,6 +117,13 @@ export default function AboutTabs() {
   }, []);
 
   const activeTab = TABS.find((t) => t.id === active)!;
+
+  const setContentRef = useCallback(
+    (id: string) => (el: HTMLDivElement | null) => {
+      contentRefs.current[id] = el;
+    },
+    []
+  );
 
   return (
     <section id="sobre" className="py-16 sm:py-20 lg:py-24 bg-[#f6f7fb]">
@@ -141,9 +153,11 @@ export default function AboutTabs() {
               key={tab.id}
               onClick={() => setActive(tab.id)}
               className={`px-4 py-2 rounded-full text-sm font-semibold transition-all
-                ${active === tab.id
-                  ? "bg-primary text-white shadow-soft"
-                  : "bg-white text-zinc-700 border border-zinc-300 hover:bg-zinc-100"}`}
+                ${
+                  active === tab.id
+                    ? "bg-primary text-white shadow-soft"
+                    : "bg-white text-zinc-700 border border-zinc-300 hover:bg-zinc-100"
+                }`}
               aria-pressed={active === tab.id}
             >
               {tab.title}
@@ -159,16 +173,22 @@ export default function AboutTabs() {
           className="relative mx-auto max-w-6xl"
           style={{ minHeight: minH ? `${minH}px` : undefined }}
         >
-          
-          <div key={active} className="text-left sm:text-justify text-complementary leading-relaxed text-xl lg:text-2xl space-y-6 animate-fadeIn">
+          <div
+            key={active}
+            className="text-left sm:text-justify text-complementary leading-relaxed text-xl lg:text-2xl space-y-6 animate-fadeIn"
+          >
             {activeTab.content}
           </div>
 
-          <div ref={measurerRef} aria-hidden className="absolute left-0 top-0 -z-10 opacity-0 pointer-events-none">
+          <div
+            ref={measurerRef}
+            aria-hidden
+            className="absolute left-0 top-0 -z-10 opacity-0 pointer-events-none"
+          >
             {TABS.map((tab) => (
               <div
                 key={`measure-${tab.id}`}
-                ref={(el) => (contentRefs.current[tab.id] = el)}
+                ref={setContentRef(tab.id)}
                 className="max-w-6xl text-left sm:text-justify text-complementary leading-relaxed text-xl lg:text-2xl space-y-6"
               >
                 {tab.content}
