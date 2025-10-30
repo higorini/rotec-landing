@@ -46,7 +46,7 @@ export default function SectionLicencas() {
   }, [open]);
 
   return (
-    <section className="full-bleed isolate overflow-hidden bg-[#121212] text-white">
+    <section className="full-bleed isolate overflow-hidden bg-primary text-white">
         <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-10 px-6 py-20 md:grid-cols-2 md:gap-16 lg:py-28">
             
             <div className="flex flex-col items-start justify-center">

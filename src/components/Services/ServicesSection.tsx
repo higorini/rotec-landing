@@ -13,7 +13,7 @@ export default function ServicesSection() {
   return (
     <section
       id="servicos"
-      className="relative mx-[calc(50%-50vw)] w-screen bg-complementary text-secondary"
+      className="relative mx-[calc(50%-50vw)] w-screen bg-primary text-secondary"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
         <header className="text-center max-w-3xl mx-auto">

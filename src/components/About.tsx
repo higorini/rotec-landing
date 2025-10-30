@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, useCallback } from "react";
-import { ReactElement } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback, ReactElement } from "react";
 
 type Tab = {
   id: string;
@@ -81,83 +80,56 @@ export default function AboutTabs() {
     []
   );
 
-  const measurerRef = useRef<HTMLDivElement>(null);
-  const contentRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const [minH, setMinH] = useState<number>(0);
+  const bankRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const [maxHeight, setMaxHeight] = useState<number>(0);
+
+  const setBankRef = useCallback(
+    (id: string) => (el: HTMLDivElement | null) => {
+      bankRefs.current[id] = el;
+    },
+    []
+  );
 
   useEffect(() => {
-    const entries = Object.values(contentRefs.current).filter(
-      (el): el is HTMLDivElement => el !== null
+    const els = Object.values(bankRefs.current).filter(
+      (el): el is HTMLDivElement => !!el
     );
-    if (!entries.length) return;
+    if (!els.length) return;
 
     const compute = () => {
-      const h = Math.max(...entries.map((el) => el.scrollHeight));
-      setMinH(h);
+      const h = Math.max(...els.map((el) => el.scrollHeight));
+      setMaxHeight(h);
     };
 
     compute();
 
-    const roList = entries.map(
-      (el) =>
-        new ResizeObserver(() => {
-          compute();
-        })
-    );
-
-    roList.forEach((ro, i) => ro.observe(entries[i]));
+    const ros = els.map((el) => new ResizeObserver(compute));
+    ros.forEach((ro, i) => ro.observe(els[i]!));
 
     const onResize = () => compute();
     window.addEventListener("resize", onResize);
 
     return () => {
-      roList.forEach((ro) => ro.disconnect());
+      ros.forEach((ro) => ro.disconnect());
       window.removeEventListener("resize", onResize);
     };
   }, []);
 
   const activeTab = TABS.find((t) => t.id === active)!;
 
-  const setContentRef = useCallback(
-    (id: string) => (el: HTMLDivElement | null) => {
-      contentRefs.current[id] = el;
-    },
-    []
-  );
-
   return (
-    <section id="sobre" className="py-16 sm:py-20 lg:py-24 bg-[#f6f7fb]">
+    <section id="sobre" className="py-16 sm:py-20 lg:py-24 bg-padrao full-bleed">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl text-center">
-        <div className="flex items-center justify-center gap-3 mb-6">
-          <span className="h-px w-24 lg:w-40 bg-[rgba(0,0,0,0.15)]" />
-          <svg
-            aria-hidden="true"
-            className="w-14 lg:w-16 h-10 text-[rgba(0,0,0,0.35)]"
-            viewBox="0 0 120 60"
-            fill="none"
-          >
-            <path
-              d="M10,30 C20,5 50,5 60,30 C70,55 100,55 110,30"
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="none"
-            />
-            <circle cx="60" cy="30" r="2" fill="currentColor" />
-          </svg>
-          <span className="h-px w-24 lg:w-40 bg-[rgba(0,0,0,0.15)]" />
-        </div>
-
         <div className="flex flex-wrap justify-center gap-3 mb-6">
           {TABS.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActive(tab.id)}
-              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all
-                ${
-                  active === tab.id
-                    ? "bg-primary text-white shadow-soft"
-                    : "bg-white text-zinc-700 border border-zinc-300 hover:bg-zinc-100"
-                }`}
+              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                active === tab.id
+                  ? "bg-primary text-white shadow-soft"
+                  : "bg-white text-zinc-700 border border-zinc-300 hover:bg-zinc-100"
+              }`}
               aria-pressed={active === tab.id}
             >
               {tab.title}
@@ -165,33 +137,26 @@ export default function AboutTabs() {
           ))}
         </div>
 
-        <h2 className="font-display tracking-[0.25em] text-3xl sm:text-4xl mb-8">
-          {activeTab.title.toUpperCase()}
-        </h2>
+        <div className="relative mx-auto max-w-6xl lock-to-max" style={{ minHeight: maxHeight || undefined }}>
+          <div className="reading-box mx-auto fade-in">
+            <h2 className="reading-title font-display text-3xl sm:text-4xl text-slate-900">
+              {activeTab.title.toUpperCase()}
+            </h2>
 
-        <div
-          className="relative mx-auto max-w-6xl"
-          style={{ minHeight: minH ? `${minH}px` : undefined }}
-        >
-          <div
-            key={active}
-            className="text-left sm:text-justify text-complementary leading-relaxed text-xl lg:text-2xl space-y-6 animate-fadeIn"
-          >
-            {activeTab.content}
+            <div className="text-left sm:text-justify text-complementary leading-relaxed text-xl lg:text-2xl space-y-6">
+              {activeTab.content}
+            </div>
           </div>
 
-          <div
-            ref={measurerRef}
-            aria-hidden
-            className="absolute left-0 top-0 -z-10 opacity-0 pointer-events-none"
-          >
+          <div className="measure-bank">
             {TABS.map((tab) => (
-              <div
-                key={`measure-${tab.id}`}
-                ref={setContentRef(tab.id)}
-                className="max-w-6xl text-left sm:text-justify text-complementary leading-relaxed text-xl lg:text-2xl space-y-6"
-              >
-                {tab.content}
+              <div key={`bank-${tab.id}`} ref={setBankRef(tab.id)} className="reading-box mx-auto">
+                <h2 className="reading-title font-display text-3xl sm:text-4xl text-slate-900">
+                  {tab.title.toUpperCase()}
+                </h2>
+                <div className="text-left sm:text-justify text-complementary leading-relaxed text-xl lg:text-2xl space-y-6">
+                  {tab.content}
+                </div>
               </div>
             ))}
           </div>

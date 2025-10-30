@@ -46,10 +46,10 @@ export default function Header() {
           </Link>
 
           
-          <nav className="hidden md:flex items-center gap-8 text-3xl sm:text-4xl font-title">
+          <nav className="hidden md:flex items-center gap-8 text-3xl sm:text-4xl font-display">
             <a href="#sobre" className="hover:opacity-80">Sobre</a>
             <a href="#servicos" className="hover:opacity-80">Serviços</a>
-            <a href="#portfolio" className="hover:opacity-80">Portfólio</a>
+            <a href="#equipamento" className="hover:opacity-80">Equipamento</a>
             <a href="#contato" className="hover:opacity-80">Contato</a>
           </nav>
 
@@ -97,10 +97,10 @@ export default function Header() {
               </button>
             </div>
 
-            <nav className="px-5 pb-6 grid gap-4 text-2xl font-title">
+            <nav className="px-5 pb-6 grid gap-4 text-2xl font-display">
               <a href="#sobre" onClick={() => setOpen(false)} className="hover:opacity-80">Sobre</a>
               <a href="#servicos" onClick={() => setOpen(false)} className="hover:opacity-80">Serviços</a>
-              <a href="#portfolio" onClick={() => setOpen(false)} className="hover:opacity-80">Portfólio</a>
+              <a href="#equipamento" onClick={() => setOpen(false)} className="hover:opacity-80">Equipamento</a>
               <a href="#contato" onClick={() => setOpen(false)} className="hover:opacity-80">Contato</a>
               <a
                 href="#contato"

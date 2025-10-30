@@ -32,7 +32,7 @@ export default function Hero() {
             </h1>
 
             <p className="mt-4 text-xl sm:text-base lg:text-2xl opacity-95">
-              Na arte de desentupir e realizar limpeza técnica com segurança, agilidade e eficiência.
+              O que você não vê mantém o seu negócio funcionando.
             </p>
 
             <div className="mt-8 flex items-center justify-center gap-4">
@@ -40,7 +40,7 @@ export default function Hero() {
                 href="#sobre"
                 className="inline-flex items-center gap-2 rounded-xl border-2 border-white/90 px-8 py-3 text-2xl sm:text-xl lg:text-4xl font-semibold hover:bg-white/10 active:scale-[0.99] transition"
               >
-                Veja mais
+                Fale Conosco
               </a>
             </div>
           </div>

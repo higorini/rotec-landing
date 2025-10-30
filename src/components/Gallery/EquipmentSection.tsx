@@ -12,8 +12,8 @@ export default function EquipmentSection() {
 
   return (
     <section
-      id="equipamentos"
-      className="relative mx-[calc(50%-50vw)] w-screen bg-complementary text-secondary"
+      id="equipamento"
+      className="relative mx-[calc(50%-50vw)] w-screen bg-primary text-secondary"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
         <header className="text-center max-w-3xl mx-auto">
