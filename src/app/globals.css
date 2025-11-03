@@ -1,28 +1,64 @@
-@import url("https://fonts.googleapis.com/css2?family=Alexandria:wght@400;600;700&family=Bebas+Neue&family=Karantina:wght@300;400;700&display=swap");
+/**
+ * ROTEC Service - Global Styles
+ * ==============================
+ * Estilos globais, tokens de design e utilitários customizados
+ * Versão: 2.0 (Refatorada)
+ */
 
+@import url("https://fonts.googleapis.com/css2?family=Alexandria:wght@400;600;700&family=Bebas+Neue&family=Karantina:wght@300;400;700&display=swap");
 @import "tailwindcss";
 
 @theme {
-  
-  --color-primary: #110c6c;        
-  --color-secondary: #f8f8ff;      
-  --color-complementary: #191919;  
+  /* Cores Primárias */
+  --color-primary: #110c6c;
+  --color-secondary: #f8f8ff;
+  --color-complementary: #191919;
 
-  
+  /* Cores Secundárias (NOVO) */
+  --color-accent: #00a99d;
+  --color-success: #16a34a;
+
+  /* Cinzas */
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-600: #4b5563;
+
+  /* Tipografia */
   --font-title: "Karantina", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Alexandria", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Bebas Neue", ui-sans-serif, system-ui, sans-serif;
 
-  
-  --radius-xl: 0.75rem;
-  --radius-2xl: 1rem;
+  /* Espaçamento (NOVO) */
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --gap-card: 1rem;
+  --gap-section: 1.5rem;
 
-  
+  /* Raios */
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* Sombras */
   --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.06);
   --shadow-hover: 0 6px 24px rgba(0, 0, 0, 0.08);
+
+  /* Z-index (NOVO) */
+  --z-header: 40;
+  --z-modal: 80;
+  --z-overlay: 100;
+}
+
+/* Reset padrão */
+html {
+  scroll-behavior: smooth;
+}
+
+button {
+  cursor: pointer;
 }
 
 @layer utilities {
+  /* Background Padrão */
   .bg-padrao {
     background-image: url('/images/padrao.jpg');
     background-size: cover;
@@ -30,6 +66,7 @@
     background-repeat: no-repeat;
   }
 
+  /* Seções Full-width */
   .full-bleed {
     width: 100vw;
     position: relative;
@@ -39,26 +76,30 @@
     margin-right: -50vw;
   }
 
+  /* Container com Blur */
   .reading-box {
-    background: rgba(255,255,255,0.9);
+    background: rgba(255, 255, 255, 0.9);
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
-    border-radius: 1rem;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
     padding: 1.25rem;
   }
 
+  /* Título em Reading Box */
   .reading-title {
     margin-bottom: 1rem;
     text-align: center;
     letter-spacing: 0.25em;
   }
 
+  /* Altura Dinâmica */
   .lock-to-max {
     transition: min-height 0.35s ease;
     position: relative;
   }
 
+  /* Medidor Invisível */
   .measure-bank {
     position: absolute;
     inset: 0;
@@ -67,27 +108,43 @@
     z-index: -1;
   }
 
+  /* Fade In Animation */
   .fade-in {
-    animation: fadeIn .25s ease;
+    animation: fadeInSmooth 0.25s ease;
   }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to   { opacity: 1; transform: translateY(0); }
+
+  /* Animação Fade In (variante) */
+  .animate-fadeIn {
+    animation: fadeInSmooth 0.4s ease-in-out;
+  }
+
+  /* Marquee (scroll contínuo) */
+  .marquee-track {
+    animation: marquee 40s linear infinite;
+  }
+
+  .marquee-ghost {
+    transform: translateX(100%);
   }
 }
 
-html {
-  scroll-behavior: smooth;
+/* Animações */
+@keyframes fadeInSmooth {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-button {
-  cursor: pointer;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.animate-fadeIn {
-  animation: fadeIn 0.4s ease-in-out;
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }

@@ -4,9 +4,7 @@ import Image from "next/image";
 import { CLIENT_LOGOS } from "./clients.data";
 
 export default function ClientsSection() {
-  const track = [...CLIENT_LOGOS, ...CLIENT_LOGOS]; 
-
-  console.log("CLIENT_LOGOS:", CLIENT_LOGOS);
+  const track = [...CLIENT_LOGOS, ...CLIENT_LOGOS];
 
   return (
     <section
@@ -65,16 +63,6 @@ export default function ClientsSection() {
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes marquee {
-          from { transform: translateX(0); }
-          to   { transform: translateX(-100%); }
-        }
-        .marquee-track { animation: marquee 40s linear infinite; }
-        .marquee-ghost { transform: translateX(100%); }
-      `}</style>
-
     </section>
   );
 }

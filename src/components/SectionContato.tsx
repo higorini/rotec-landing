@@ -44,7 +44,7 @@ export default function SectionContato({
           </h2>
           <p className="mt-6 max-w-xl text-zinc-600">{subtitle}</p>
           <div className="mt-8">
-            <a href={whatsHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 rounded-xl bg-green-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-green-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600/40">
+            <a href={whatsHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 rounded-xl bg-[var(--color-success)] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-success)]/40">
               <Image src="/images/redes/whatsapp.svg" alt="WhatsApp" width={20} height={20} className="h-5 w-5 brightness-0 invert" />
               Seja atendido no WhatsApp
             </a>
@@ -99,7 +99,7 @@ function formatTitle(t: string) {
   return (
     <>
       {t.replace(/\s+Fale\s+Conosco!?/i, "")}
-      <span className="block text-teal-600">
+      <span className="block text-[var(--color-accent)]">
         {((t.match(/Fale\s+Conosco!?/i) || [])[0] as string) ?? ""}
       </span>
     </>
