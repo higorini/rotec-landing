@@ -103,7 +103,7 @@ export default function AboutTabs() {
 
     compute();
 
-    const ros = els.map((el) => new ResizeObserver(compute));
+    const ros = els.map(() => new ResizeObserver(compute));
     ros.forEach((ro, i) => ro.observe(els[i]!));
 
     const onResize = () => compute();

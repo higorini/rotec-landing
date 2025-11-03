@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import Image from "next/image";
-import type { GalleryImage } from "./types";
+import { useEffect, useRef, useState, useCallback } from 'react';
+import Image from 'next/image';
+import type { GalleryImage } from './types';
 
 type Props = {
   open: boolean;
@@ -12,6 +12,7 @@ type Props = {
   onIndex: (i: number) => void;
 };
 
+// Lightbox com navegação por teclado, wheel e drag
 export default function Lightbox({ open, index, photos, onClose, onIndex }: Props) {
   const [dragX, setDragX] = useState<number | null>(null);
   const startRef = useRef(0);
@@ -28,6 +29,7 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
     const len = lenRef.current || 1;
     onIndexRef.current((idxRef.current + 1) % len);
   }, []);
+
   const prev = useCallback(() => {
     const len = lenRef.current || 1;
     onIndexRef.current((idxRef.current - 1 + len) % len);
@@ -37,15 +39,14 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
     if (!open) return;
 
     const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-      if (e.key === "ArrowRight") next();
-      if (e.key === "ArrowLeft") prev();
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
     };
 
-    // para resolver o erro de tipo, tipamos explicitamente como EventListener
     const onWheel: EventListener = (ev) => {
       const e = ev as WheelEvent;
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
@@ -55,13 +56,13 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
       }
     };
 
-    document.addEventListener("keydown", onKey);
-    document.addEventListener("wheel", onWheel, { passive: false });
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('wheel', onWheel, { passive: false });
 
     return () => {
       document.body.style.overflow = prevOverflow;
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("wheel", onWheel);
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('wheel', onWheel);
     };
   }, [open, onClose, next, prev]);
 
@@ -69,15 +70,17 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
   const photo = photos[index];
 
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.pointerType === "mouse" && e.button !== 0) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
     e.currentTarget.setPointerCapture(e.pointerId);
     startRef.current = e.clientX;
     setDragX(0);
   };
+
   const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (dragX === null) return;
     setDragX(e.clientX - startRef.current);
   };
+
   const onPointerUp = () => {
     if (dragX !== null) {
       if (dragX < -60) next();
@@ -88,7 +91,7 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
 
   return (
     <div
-      className="fixed inset-0 z-[130] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+      className="fixed inset-0 z-[var(--z-modal)] flex items-center justify-center bg-black/80 backdrop-blur-sm"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -96,7 +99,7 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
       <button
         aria-label="Fechar"
         onClick={onClose}
-        className="absolute top-4 right-4 rounded-full border w-10 h-10 grid place-items-center text-secondary hover:text-white"
+        className="absolute top-4 right-4 rounded-full border w-10 h-10 grid place-items-center text-secondary hover:text-white transition"
       >
         ✕
       </button>
@@ -104,14 +107,15 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
       <button
         aria-label="Anterior"
         onClick={(e) => { e.stopPropagation(); prev(); }}
-        className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full border w-10 h-10 grid place-items-center text-secondary hover:text-white"
+        className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full border w-10 h-10 grid place-items-center text-secondary hover:text-white transition"
       >
         ‹
       </button>
+
       <button
         aria-label="Próxima"
         onClick={(e) => { e.stopPropagation(); next(); }}
-        className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full border w-10 h-10 grid place-items-center text-secondary hover:text-white"
+        className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full border w-10 h-10 grid place-items-center text-secondary hover:text-white transition"
       >
         ›
       </button>
@@ -128,7 +132,7 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
           className="relative max-w-[min(95vw,1200px)] max-h-[85svh] w-full h-full"
           style={{
             transform: dragX !== null ? `translateX(${dragX}px)` : undefined,
-            transition: dragX !== null ? "none" : "transform .2s",
+            transition: dragX !== null ? 'none' : 'transform .2s',
           }}
         >
           <Image
