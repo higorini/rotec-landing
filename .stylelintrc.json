@@ -1,0 +1,52 @@
+{
+  "extends": "stylelint-config-standard",
+  "ignoreFiles": [
+    "node_modules/**",
+    ".next/**",
+    "out/**",
+    "build/**"
+  ],
+  "overrides": [
+    {
+      "files": ["src/**/*.css"],
+      "rules": {
+        "no-empty-source": null,
+        "declaration-no-important": true,
+        "selector-no-qualifying-type": null,
+        "function-url-quotes": "always",
+        "font-family-no-missing-generic-family-keyword": null,
+        "at-rule-no-unknown": [
+          true,
+          {
+            "ignoreAtRules": [
+              "import",
+              "theme",
+              "layer",
+              "tailwind"
+            ]
+          }
+        ],
+        "property-no-unknown": [
+          true,
+          {
+            "ignoreProperties": [
+              "composes"
+            ]
+          }
+        ],
+        "import-notation": null,
+        "color-function-notation": null,
+        "color-function-alias-notation": null,
+        "alpha-value-notation": null,
+        "property-no-vendor-prefix": null,
+        "selector-class-pattern": null,
+        "keyframes-name-pattern": null,
+        "rule-empty-line-before": null
+      }
+    },
+    {
+      "files": ["src/**/*.tsx", "src/**/*.ts"],
+      "customSyntax": "postcss-styled-syntax"
+    }
+  ]
+}
