@@ -29,6 +29,7 @@
   --font-display: "Bebas Neue", ui-sans-serif, system-ui, sans-serif;
 
   /* Espaçamento (NOVO) */
+  --space-sm: 0.5rem;
   --space-md: 1rem;
   --space-lg: 1.5rem;
   --gap-card: 1rem;

@@ -31,10 +31,10 @@ export default function Button({
     ghost: 'text-primary hover:opacity-70',
   };
 
-  const sizeMap = {
-    sm: 'px-3 py-2 text-sm',
-    md: 'px-5 py-3 text-base',
-    lg: 'px-8 py-4 text-lg',
+  const sizeClasses = {
+    sm: 'text-sm',
+    md: 'text-base',
+    lg: 'text-lg',
   };
 
   const baseClasses = `
@@ -45,10 +45,16 @@ export default function Button({
     focus-visible:outline-primary
     disabled:opacity-50 disabled:cursor-not-allowed
     ${variantMap[variant]}
-    ${sizeMap[size]}
+    ${sizeClasses[size]}
     ${loading ? 'opacity-70 pointer-events-none' : ''}
     ${className}
   `;
+
+  const paddingStyle = {
+    sm: { padding: 'var(--space-sm) var(--space-md)' },
+    md: { padding: 'var(--space-md) var(--space-lg)' },
+    lg: { padding: 'calc(var(--space-md) + 0.25rem) calc(var(--space-lg) + 0.5rem)' },
+  } as const;
 
   const content = (
     <>
@@ -59,7 +65,7 @@ export default function Button({
 
   if (asLink) {
     return (
-      <a href={href} className={baseClasses}>
+      <a href={href} className={baseClasses} style={paddingStyle[size]}>
         {content}
       </a>
     );
@@ -68,6 +74,7 @@ export default function Button({
   return (
     <button
       className={baseClasses}
+      style={paddingStyle[size]}
       disabled={disabled || loading}
       {...props}
     >

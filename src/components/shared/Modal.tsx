@@ -66,7 +66,7 @@ export default function Modal({
         onClick={(e) => e.stopPropagation()}
       >
         {(title || showCloseButton) && (
-          <header className="flex items-center justify-between gap-4 p-5 border-b border-gray-200">
+          <header className="flex items-center justify-between gap-4 border-b border-gray-200" style={{ padding: 'var(--space-lg)' }}>
             {title && (
               <h3 id={titleId} className="font-title text-xl sm:text-2xl font-bold">
                 {title}
@@ -83,7 +83,7 @@ export default function Modal({
             )}
           </header>
         )}
-        <div className="p-5">{children}</div>
+        <div style={{ padding: 'var(--space-lg)' }}>{children}</div>
       </article>
     </div>
   );

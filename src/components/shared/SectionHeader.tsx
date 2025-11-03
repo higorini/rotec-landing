@@ -31,7 +31,7 @@ export default function SectionHeader({
         {title}
       </h2>
       {subtitle && (
-        <p className="mt-3 text-sm sm:text-base text-gray-600">
+        <p className="text-sm sm:text-base text-gray-600" style={{ marginTop: 'var(--space-md)' }}>
           {subtitle}
         </p>
       )}

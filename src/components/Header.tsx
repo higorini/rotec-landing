@@ -23,7 +23,7 @@ export default function Header() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-40 bg-secondary/95 backdrop-blur border-b">
+    <header className="sticky top-0 bg-secondary/95 backdrop-blur border-b" style={{ zIndex: 'var(--z-header)' }}>
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3">
         
@@ -68,7 +68,8 @@ export default function Header() {
       
       {open && (
         <div
-          className="fixed inset-0 z-[100] bg-black/60"
+          className="fixed inset-0 bg-black/60"
+          style={{ zIndex: 'var(--z-overlay)' }}
           role="dialog"
           aria-modal="true"
           onClick={() => setOpen(false)}
