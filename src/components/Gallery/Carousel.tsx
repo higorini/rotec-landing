@@ -30,25 +30,39 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
   );
   const isDesktop = perView >= 2;
 
-  const loop = useMemo(() => [...photos, ...photos, ...photos], [photos]);
-  const base = photos.length;
+  // Loop infinito: 1 cópia anterior + original + 1 cópia posterior
+  const loop = useMemo(() => [...photos.slice(-1), ...photos, ...photos.slice(0, 1)], [photos]);
+  const base = 1; // Começamos no índice 1 (primeira cópia anterior)
   const [idx, setIdx] = useState(base);
+  const [isNormalizing, setIsNormalizing] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
+  const normalizeTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
+  // Normalizar índice para loop infinito suave
   const normalize = useCallback(() => {
+    setIsNormalizing(true);
     let newIdx = idx;
-    if (idx >= base + photos.length) newIdx = idx - photos.length;
-    if (idx < base) newIdx = idx + photos.length;
-    if (newIdx !== idx) {
-      setTimeout(() => {
-        if (!trackRef.current) return;
-        trackRef.current.style.transition = "none";
-        setIdx(newIdx);
-        void trackRef.current.offsetHeight;
-        trackRef.current.style.transition = "";
-      }, 10);
+    const total = photos.length;
+
+    // Se passou do final, volta pro início
+    if (idx >= base + total) {
+      newIdx = base;
     }
-  }, [idx, base, photos.length]);
+    // Se foi antes do início, vai pro final
+    if (idx < base) {
+      newIdx = base + total - perView;
+    }
+
+    if (newIdx !== idx && trackRef.current) {
+      trackRef.current.style.transition = "none";
+      setIdx(newIdx);
+      // Force reflow para garantir que o navegador aplique a mudança
+      void trackRef.current.offsetHeight;
+      setIsNormalizing(false);
+    } else {
+      setIsNormalizing(false);
+    }
+  }, [idx, base, perView, photos.length]);
 
   const go = useCallback(
     (page: number) => setIdx(base + page * perView),
@@ -124,12 +138,21 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
   useEffect(() => {
     if (!trackRef.current) return;
     const stepPercent = (100 / perView) * idx;
-    trackRef.current.style.transition =
-      trackRef.current.style.transition || "transform .3s ease";
     trackRef.current.style.transform = `translateX(-${stepPercent}%)`;
-    const t = setTimeout(normalize, 310);
-    return () => clearTimeout(t);
-  }, [idx, perView, normalize]);
+
+    // Se não estamos normalizando, aplicar transição
+    if (!isNormalizing) {
+      trackRef.current.style.transition = "transform 0.3s ease";
+    }
+
+    // Normalizar após a transição terminar
+    if (normalizeTimeoutRef.current) clearTimeout(normalizeTimeoutRef.current);
+    normalizeTimeoutRef.current = setTimeout(normalize, 300);
+
+    return () => {
+      if (normalizeTimeoutRef.current) clearTimeout(normalizeTimeoutRef.current);
+    };
+  }, [idx, perView, isNormalizing, normalize]);
 
   const basis =
     perView === 4 ? "basis-1/4" : perView === 2 ? "basis-1/2" : "basis-full";
