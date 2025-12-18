@@ -9,7 +9,6 @@ interface SectionHeaderProps {
   children?: ReactNode;
 }
 
-// Header padrão para seções - títulos e subtítulos
 export default function SectionHeader({
   title,
   subtitle,

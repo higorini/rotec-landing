@@ -118,7 +118,7 @@ export default function AboutTabs() {
   const activeTab = TABS.find((t) => t.id === active)!;
 
   return (
-    <section id="sobre" className="py-16 sm:py-20 lg:py-24 bg-padrao full-bleed">
+    <section id="sobre" className="py-16 sm:py-20 lg:py-24 bg-white full-bleed">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl text-center">
         <div className="flex flex-wrap justify-center gap-3 mb-6">
           {TABS.map((tab) => (
@@ -138,8 +138,8 @@ export default function AboutTabs() {
         </div>
 
         <div className="relative mx-auto max-w-6xl lock-to-max" style={{ minHeight: maxHeight || undefined }}>
-          <div className="reading-box mx-auto fade-in">
-            <h2 className="reading-title font-display text-3xl sm:text-4xl text-slate-900">
+          <div className="mx-auto fade-in">
+            <h2 className="font-display text-3xl sm:text-4xl text-slate-900 mb-6">
               {activeTab.title.toUpperCase()}
             </h2>
 
@@ -150,8 +150,8 @@ export default function AboutTabs() {
 
           <div className="measure-bank">
             {TABS.map((tab) => (
-              <div key={`bank-${tab.id}`} ref={setBankRef(tab.id)} className="reading-box mx-auto">
-                <h2 className="reading-title font-display text-3xl sm:text-4xl text-slate-900">
+              <div key={`bank-${tab.id}`} ref={setBankRef(tab.id)} className="mx-auto">
+                <h2 className="font-display text-3xl sm:text-4xl text-slate-900 mb-6">
                   {tab.title.toUpperCase()}
                 </h2>
                 <div className="text-left sm:text-justify text-complementary leading-relaxed text-xl lg:text-2xl space-y-6">

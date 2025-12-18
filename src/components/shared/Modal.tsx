@@ -12,7 +12,6 @@ interface ModalProps {
   closeOnBackdrop?: boolean;
 }
 
-// Modal compartilhado com suporte a backdrop, escape key e body overflow
 export default function Modal({
   open,
   onClose,
@@ -24,7 +23,6 @@ export default function Modal({
 }: ModalProps) {
   const titleId = useId();
 
-  // Previne scroll da página quando modal está aberto
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
@@ -34,7 +32,6 @@ export default function Modal({
     };
   }, [open]);
 
-  // Fecha modal ao pressionar Escape
   useEffect(() => {
     if (!open) return;
     const handleKey = (e: KeyboardEvent) => {

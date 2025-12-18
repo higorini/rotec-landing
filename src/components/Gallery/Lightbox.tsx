@@ -12,9 +12,9 @@ type Props = {
   onIndex: (i: number) => void;
 };
 
-// Lightbox com navegação por teclado, wheel e drag
 export default function Lightbox({ open, index, photos, onClose, onIndex }: Props) {
   const [dragX, setDragX] = useState<number | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const startRef = useRef(0);
 
   const idxRef = useRef(index);
@@ -24,6 +24,13 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
   useEffect(() => { idxRef.current = index; }, [index]);
   useEffect(() => { lenRef.current = photos.length; }, [photos.length]);
   useEffect(() => { onIndexRef.current = onIndex; }, [onIndex]);
+
+  useEffect(() => {
+    if (!open) return;
+    setIsTransitioning(true);
+    const timer = setTimeout(() => setIsTransitioning(false), 150);
+    return () => clearTimeout(timer);
+  }, [index, open]);
 
   const next = useCallback(() => {
     const len = lenRef.current || 1;
@@ -141,6 +148,10 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
             fill
             sizes="100vw"
             className="object-contain select-none"
+            style={{
+              opacity: isTransitioning ? 0 : 1,
+              transition: 'opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
             draggable={false}
             priority
           />

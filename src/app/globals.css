@@ -59,12 +59,9 @@ button {
 }
 
 @layer utilities {
-  /* Background Padrão */
+  /* Background Padrão - Removido, usar bg-white */
   .bg-padrao {
-    background-image: url('/images/padrao.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-color: white;
   }
 
   /* Seções Full-width */

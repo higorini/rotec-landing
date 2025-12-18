@@ -11,11 +11,11 @@ export default function FAQSection() {
   return (
     <section
       id="faq"
-      className="relative mx-[calc(50%-50vw)] w-screen bg-padrao text-complementary"
+      className="relative mx-[calc(50%-50vw)] w-screen bg-white text-complementary"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
         <div className="flex justify-center">
-          <div className="reading-box">
+          <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
             <SectionHeader
               title="COMO FUNCIONA"
               subtitle="Clique para ver o passo a passo de cada serviço."

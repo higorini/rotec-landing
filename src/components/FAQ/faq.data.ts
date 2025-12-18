@@ -1,7 +1,7 @@
 export type FaqItem = {
   id: string;
-  title: string;     // ex.: "Desentupimento — Como funciona?"
-  steps: string[];   // lista numerada
+  title: string;
+  steps: string[];
 };
 
 export const FAQ_ITEMS: FaqItem[] = [

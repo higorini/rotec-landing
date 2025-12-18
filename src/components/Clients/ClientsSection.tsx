@@ -9,17 +9,17 @@ export default function ClientsSection() {
   return (
     <section
       id="clientes"
-      className="relative mx-[calc(50%-50vw)] w-screen bg-padrao text-complementary"
+      className="relative mx-[calc(50%-50vw)] w-screen bg-white text-complementary"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
-        <div className="reading-box">
-          <header className="text-center max-w-4xl mx-auto">
+        <div>
+          <header className="text-center max-w-4xl mx-auto mb-10">
             <h2 className="font-display tracking-[0.25em] text-3xl sm:text-4xl">
               CLIENTES QUE ACREDITAM
               <br className="hidden sm:block" /> NO NOSSO TRABALHO
             </h2>
           </header>
-          <div className="mt-10 overflow-hidden">
+          <div className="overflow-hidden">
             <div className="relative">
               <div className="marquee-track relative z-10 flex items-center gap-10 sm:gap-14 lg:gap-20 will-change-transform select-none">
                   {track.map((logo, i) => (

@@ -10,7 +10,6 @@ interface CardProps {
   size?: 'sm' | 'md' | 'lg';
 }
 
-// Card base com suporte a variantes e tamanhos
 export default function Card({
   children,
   title,

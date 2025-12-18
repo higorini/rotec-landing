@@ -4,7 +4,6 @@ interface CloseButtonProps {
   className?: string;
 }
 
-// Botão fechar padrão
 export default function CloseButton({
   onClick,
   label = 'Fechar',

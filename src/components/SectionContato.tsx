@@ -36,9 +36,9 @@ export default function SectionContato({
   const whatsHref = buildWhatsHref(whatsapp, whatsMessage);
 
   return (
-    <section className="full-bleed bg-padrao">
+    <section className="full-bleed bg-white">
       <div className="mx-auto grid max-w-[1600px] grid-cols-1 items-stretch gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16 lg:py-28">
-        <div className="flex flex-col justify-center reading-box">
+        <div className="flex flex-col justify-center">
           <h2 className="max-w-2xl font-serif text-4xl font-bold leading-tight text-zinc-900 sm:text-5xl">
             {formatTitle(title)}
           </h2>

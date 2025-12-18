@@ -10,7 +10,6 @@ interface LinkIconProps {
   className?: string;
 }
 
-// Link com ícone (lucide ou imagem)
 export default function LinkIcon({
   href,
   icon,

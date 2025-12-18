@@ -11,7 +11,6 @@ interface ButtonProps
   href?: string;
 }
 
-// Botão com variantes e tamanhos
 export default function Button({
   children,
   variant = 'primary',

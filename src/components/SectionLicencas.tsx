@@ -114,6 +114,43 @@ export default function SectionLicencas() {
                 </ul>
             </div>
         </div>
+
+        {open && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+            onClick={() => setOpen(null)}
+          >
+            <div
+              className="relative max-w-2xl w-full bg-white rounded-2xl shadow-2xl p-6 sm:p-8"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setOpen(null)}
+                className="absolute top-4 right-4 rounded-full border w-9 h-9 grid place-items-center hover:bg-gray-100 transition"
+                aria-label="Fechar"
+              >
+                ✕
+              </button>
+
+              <div className="flex flex-col items-center text-center">
+                <div className="relative aspect-square w-32 mb-6">
+                  <Image
+                    src={LICENCAS[open].logo}
+                    alt={LICENCAS[open].alt}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <h3 className="text-3xl font-bold text-zinc-900 mb-4">
+                  {LICENCAS[open].title}
+                </h3>
+                <p className="text-zinc-700 leading-relaxed max-w-xl">
+                  {LICENCAS[open].resumo}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
     </section>
   );
 }

@@ -13,8 +13,8 @@ export default function ServiceCard({ service, onClick }: Props) {
         shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-hover)]
         transition focus-visible:outline-2 focus-visible:outline-primary
         flex flex-col items-center justify-center text-center
-        w-full max-w-[260px]   /* largura do trilho, com limite */
-        h-[200px] sm:h-[220px] md:h-[240px]  /* altura padronizada */
+        w-full max-w-[260px]
+        h-[200px] sm:h-[220px] md:h-[240px]
         p-4
       "
     >

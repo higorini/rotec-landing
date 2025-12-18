@@ -27,11 +27,8 @@ export default function EquipmentSection() {
           <Carousel
             photos={EQUIPMENT_PHOTOS}
             onOpenLightbox={(i) => {
-              
-              if (typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches) {
-                setIndex(i);
-                setOpen(true);
-              }
+              setIndex(i);
+              setOpen(true);
             }}
           />
         </div>
