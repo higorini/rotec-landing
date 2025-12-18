@@ -13,7 +13,7 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
   const [isMobile, setIsMobile] = useState(true);
   const [page, setPage] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const transitionTimeoutRef = useRef<NodeJS.Timeout>();
+  const transitionTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const draggingRef = useRef(false);
 
   useEffect(() => {
