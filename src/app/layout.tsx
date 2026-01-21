@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import StructuredData from "@/components/StructuredData";
+import GoogleTagManager from "@/components/GoogleTagManager";
 
 export const metadata: Metadata = {
   title: "ROTEC Service — Desentupimento, Hidrojateamento e Auto Vácuo desde 1993",
@@ -75,9 +76,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR">
       <head>
+        <GoogleTagManager />
         <StructuredData />
       </head>
       <body className="bg-secondary text-complementary font-body antialiased">
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-MKWC6JHW"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         {children}
       </body>
     </html>
