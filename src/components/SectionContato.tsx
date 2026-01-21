@@ -24,7 +24,7 @@ export default function SectionContato({
   title = "Ficou com alguma dúvida? Fale conosco!",
   subtitle = "Entre em contato pelo WhatsApp ou, se preferir, envie um e-mail.",
   phone = "(11) 3815-6720",
-  whatsapp = "5511987654321",
+  whatsapp = "5511947850224",
   email = "contato@seudominio.com.br",
   socials = [
     { name: "Instagram", href: "https://instagram.com/seu_perfil", iconPath: "/images/redes/instagram.svg" },

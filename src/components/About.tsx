@@ -48,10 +48,25 @@ export default function AboutTabs() {
         title: "Nossa Missão",
         content: (
           <p className="indent-4 sm:indent-8 lg:indent-16">
-            Oferecer soluções eficientes em saneamento e manutenção ambiental, unindo
-            tecnologia, responsabilidade e compromisso para garantir a{" "}
-            <strong>segurança, o bem-estar</strong> e a{" "}
-            <strong>satisfação dos nossos clientes</strong>.
+            Servir indústrias com soluções técnicas confiáveis, seguras e
+            ambientalmente responsáveis, cuidando de sistemas essenciais
+            que sustentam a operação e garantindo a continuidade dos
+            processos produtivos. Atuamos como extensão das empresas
+            que atendemos, com <strong>responsabilidade</strong>, <strong>proximidade</strong> e{" "}
+            <strong>compromisso com pessoas, processos e resultados</strong>.
+          </p>
+        ),
+      },
+      {
+        id: "visao",
+        title: "Nossa Visão",
+        content: (
+          <p className="indent-4 sm:indent-8 lg:indent-16">
+            Ser referência no atendimento às indústrias <strong>automotiva</strong>,{" "}
+            <strong>farmacêutica</strong> e <strong>alimentícia</strong>, reconhecida como parceira
+            estratégica que alia excelência técnica, conformidade ambiental
+            e uma cultura de cuidado típica de uma empresa familiar, capaz
+            de construir <strong>relações sólidas e duradouras</strong>.
           </p>
         ),
       },
@@ -61,17 +76,28 @@ export default function AboutTabs() {
         content: (
           <ul className="list-disc list-inside space-y-2 text-left sm:text-justify indent-4 sm:indent-8 lg:indent-16">
             <li>
-              <strong>Comprometimento:</strong> qualidade com respeito a prazos e normas.
+              <strong>Servir com compromisso:</strong> atuamos como braço direito da
+              operação do cliente.
             </li>
             <li>
-              <strong>Transparência:</strong> clareza nas informações e orçamentos.
+              <strong>Cuidado com as pessoas:</strong> valorizamos colaboradores,
+              parceiros e clientes em relações baseadas em respeito e confiança.
             </li>
             <li>
-              <strong>Inovação:</strong> busca contínua por tecnologias e boas práticas.
+              <strong>Excelência operacional:</strong> técnica, método e qualidade,
+              mesmo nos bastidores.
             </li>
             <li>
-              <strong>Responsabilidade ambiental:</strong> atuação conforme as leis e com
-              respeito ao meio ambiente.
+              <strong>Segurança sempre:</strong> proteção das pessoas, instalações e
+              processos.
+            </li>
+            <li>
+              <strong>Responsabilidade ambiental:</strong> gestão correta de resíduos e
+              práticas sustentáveis.
+            </li>
+            <li>
+              <strong>Transparência e ética:</strong> clareza, conformidade e relações
+              de longo prazo.
             </li>
           </ul>
         ),

@@ -45,7 +45,7 @@ export default function Page() {
         <section id="contato" className="">
           <SectionContato
             phone="(11) 4195-9000"
-            whatsapp="5511947485704"
+            whatsapp="5511947850224"
             email="rotec@rotecservice.com.br"
             socials={[
               { 

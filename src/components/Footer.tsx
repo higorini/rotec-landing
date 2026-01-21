@@ -23,12 +23,12 @@ export default function Footer() {
                 </li>
                 <li>
                   <a
-                    href="https://wa.me/5511947485704?text=Olá!%20Vim%20pelo%20site%20da%20ROTEC%20e%20gostaria%20de%20um%20orçamento."
+                    href="https://wa.me/5511947850224?text=Olá!%20Vim%20pelo%20site%20da%20ROTEC%20e%20gostaria%20de%20um%20orçamento."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:opacity-100 transition-opacity"
                   >
-                    💬 (11) 94748-5704
+                    💬 (11) 94785-0224
                   </a>
                 </li>
                 <li>
