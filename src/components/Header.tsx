@@ -50,7 +50,9 @@ export default function Header() {
             <a href="#sobre" className="hover:opacity-80">Sobre</a>
             <a href="#servicos" className="hover:opacity-80">Serviços</a>
             <a href="#equipamento" className="hover:opacity-80">Equipamento</a>
-            <a href="#contato" className="hover:opacity-80">Contato</a>
+            <a href="https://wa.me/5511947850224?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento."
+            target="_blank"
+            rel="noopener noreferrer" className="hover:opacity-80">Contato</a>
           </nav>
 
           

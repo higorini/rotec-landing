@@ -190,7 +190,9 @@ export default function AboutTabs() {
 
         <div className="mt-10">
           <a
-            href="#contato"
+            href="https://wa.me/5511947850224?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento."
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-2xl px-8 py-4 font-semibold bg-primary text-white hover:opacity-90 active:scale-[0.99] transition shadow-[var(--shadow-soft)]"
           >
             Entre em contato
