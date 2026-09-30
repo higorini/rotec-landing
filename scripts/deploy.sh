@@ -22,7 +22,7 @@ switch_to() {
   ln -sfn "$1" "$CURRENT_LINK.tmp"
   mv -Tf "$CURRENT_LINK.tmp" "$CURRENT_LINK"
   pm2 delete "$APP_NAME" </dev/null >/dev/null 2>&1 || true
-  pm2 start npm --name "$APP_NAME" --cwd "$CURRENT_LINK" -- start -- -p "$PORT" </dev/null >/dev/null 2>&1
+  pm2 start npm --name "$APP_NAME" --cwd "$CURRENT_LINK" -- start -- -p "$PORT" -H 127.0.0.1 </dev/null >/dev/null 2>&1
   pm2 save </dev/null >/dev/null 2>&1
 }
 

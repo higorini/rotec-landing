@@ -43,10 +43,6 @@
         "keyframes-name-pattern": null,
         "rule-empty-line-before": null
       }
-    },
-    {
-      "files": ["src/**/*.tsx", "src/**/*.ts"],
-      "customSyntax": "postcss-styled-syntax"
     }
   ]
 }
