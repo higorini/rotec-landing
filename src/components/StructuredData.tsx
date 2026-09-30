@@ -1,3 +1,5 @@
+import { CONTACT } from "@/lib/contact";
+
 export default function StructuredData() {
   const structuredData = {
     "@context": "https://schema.org",
@@ -8,11 +10,11 @@ export default function StructuredData() {
         "name": "ROTEC Service",
         "alternateName": "ROTEC",
         "url": "https://www.rotecservice.com.br",
-        "logo": "https://www.rotecservice.com.br/images/og.jpg",
+        "logo": "https://www.rotecservice.com.br/images/logo.svg",
         "image": "https://www.rotecservice.com.br/images/og.jpg",
-        "description": "Soluções em desentupimento, hidrojateamento de alta pressão e auto vácuo. Atendimento residencial, empresarial e industrial com segurança, agilidade e eficiência em Barueri e Grande São Paulo.",
+        "description": "Soluções em desentupimento, hidrojateamento de alta pressão e auto vácuo. Atendimento residencial, empresarial e industrial com segurança, agilidade e eficiência em Barueri e Grande São Paulo. Atendimento de emergência 24 horas.",
         "telephone": "+55-11-4195-9000",
-        "email": "rotec@rotecservice.com.br",
+        "email": CONTACT.email,
         "foundingDate": "1993",
         "priceRange": "$$",
         "address": {
@@ -51,10 +53,7 @@ export default function StructuredData() {
             "closes": "18:00"
           }
         ],
-        "sameAs": [
-          "https://www.instagram.com/rotecservice/",
-          "https://www.linkedin.com/company/rotecservice/"
-        ]
+        "sameAs": CONTACT.socials.map((social) => social.href)
       },
       {
         "@type": "Service",

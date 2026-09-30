@@ -1,3 +1,5 @@
+import { buildWhatsHref, CONTACT } from "@/lib/contact";
+
 export default function Footer() {
   return (
     <footer className="relative mx-[calc(50%-50vw)] w-screen bg-primary text-secondary">
@@ -17,23 +19,23 @@ export default function Footer() {
               <h3 className="text-lg font-semibold mb-4">Contato</h3>
               <ul className="space-y-2 text-sm opacity-90">
                 <li>
-                  <a href="tel:+551141959000" className="hover:opacity-100 transition-opacity">
-                    📞 (11) 4195-9000
+                  <a href={CONTACT.phoneHref} className="hover:opacity-100 transition-opacity">
+                    📞 {CONTACT.phone}
                   </a>
                 </li>
                 <li>
                   <a
-                    href="https://wa.me/5511947850224?text=Olá!%20Vim%20pelo%20site%20da%20ROTEC%20e%20gostaria%20de%20um%20orçamento."
+                    href={buildWhatsHref()}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:opacity-100 transition-opacity"
                   >
-                    💬 (11) 94785-0224
+                    💬 {CONTACT.whatsappDisplay}
                   </a>
                 </li>
                 <li>
-                  <a href="mailto:rotec@rotecservice.com.br" className="hover:opacity-100 transition-opacity">
-                    ✉️ rotec@rotecservice.com.br
+                  <a href={CONTACT.emailHref} className="hover:opacity-100 transition-opacity">
+                    ✉️ {CONTACT.email}
                   </a>
                 </li>
               </ul>

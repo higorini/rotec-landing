@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { buildWhatsHref } from "@/lib/contact";
 
 export default function Hero() {
   return (
@@ -37,7 +38,7 @@ export default function Hero() {
 
             <div className="mt-8 flex items-center justify-center gap-4">
               <a
-                href="https://wa.me/5511947850224?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento."
+                href={buildWhatsHref()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-xl border-2 border-white/90 px-8 py-3 text-2xl sm:text-xl lg:text-4xl font-semibold hover:bg-white/10 active:scale-[0.99] transition"

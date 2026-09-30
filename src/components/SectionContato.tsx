@@ -2,12 +2,7 @@
 
 import Image from "next/image";
 import { Phone, Mail } from "lucide-react";
-
-type Social = { 
-  name: string; 
-  href: string;
-  iconPath: string;
-};
+import { buildWhatsHref, CONTACT, onlyDigits, type Social } from "@/lib/contact";
 
 type Props = {
   title?: string;
@@ -23,17 +18,14 @@ type Props = {
 export default function SectionContato({
   title = "Ficou com alguma dúvida? Fale conosco!",
   subtitle = "Entre em contato pelo WhatsApp ou, se preferir, envie um e-mail.",
-  phone = "(11) 3815-6720",
-  whatsapp = "5511947850224",
-  email = "contato@seudominio.com.br",
-  socials = [
-    { name: "Instagram", href: "https://instagram.com/seu_perfil", iconPath: "/images/redes/instagram.svg" },
-    { name: "LinkedIn", href: "https://linkedin.com/in/seu_perfil", iconPath: "/images/redes/linkedin.svg" },
-  ],
-  whatsMessage = "Olá! Vim pelo site e gostaria de um orçamento.",
+  phone = CONTACT.phone,
+  whatsapp = CONTACT.whatsapp,
+  email = CONTACT.email,
+  socials = CONTACT.socials,
+  whatsMessage = CONTACT.whatsappMessage,
   pepeSrc = "/images/mascotes/pepe.svg",
 }: Props) {
-  const whatsHref = buildWhatsHref(whatsapp, whatsMessage);
+  const whatsHref = buildWhatsHref(whatsMessage, whatsapp);
 
   return (
     <section id="contato" className="full-bleed bg-white">
@@ -52,7 +44,7 @@ export default function SectionContato({
           <div className="mt-8 flex flex-col gap-4 text-zinc-700">
             <div className="flex items-center gap-3">
               <Phone className="h-5 w-5 text-zinc-500" />
-              <a href={`tel:${onlyDigits(phone)}`} className="hover:underline">{phone}</a>
+              <a href={`tel:+55${onlyDigits(phone)}`} className="hover:underline">{phone}</a>
             </div>
             <div className="flex items-center gap-3">
               <Mail className="h-5 w-5 text-zinc-500" />
@@ -84,15 +76,6 @@ export default function SectionContato({
       </div>
     </section>
   );
-}
-
-function buildWhatsHref(digits: string, msg: string) {
-  const q = encodeURIComponent(msg);
-  return `https://wa.me/${onlyDigits(digits)}?text=${q}`;
-}
-
-function onlyDigits(s: string) {
-  return (s.match(/\d/g) || []).join("");
 }
 
 function formatTitle(t: string) {

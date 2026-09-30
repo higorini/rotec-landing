@@ -5,7 +5,6 @@
  * Versão: 2.0 (Refatorada)
  */
 
-@import url("https://fonts.googleapis.com/css2?family=Alexandria:wght@400;600;700&family=Bebas+Neue&family=Karantina:wght@300;400;700&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -24,9 +23,9 @@
   --color-gray-600: #4b5563;
 
   /* Tipografia */
-  --font-title: "Karantina", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Alexandria", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Bebas Neue", ui-sans-serif, system-ui, sans-serif;
+  --font-title: var(--font-karantina), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-alexandria), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bebas-neue), ui-sans-serif, system-ui, sans-serif;
 
   /* Espaçamento (NOVO) */
   --space-sm: 0.5rem;

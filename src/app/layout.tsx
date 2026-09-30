@@ -1,7 +1,28 @@
 import type { Metadata } from "next";
+import { Alexandria, Bebas_Neue, Karantina } from "next/font/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
 import StructuredData from "@/components/StructuredData";
-import GoogleTagManager from "@/components/GoogleTagManager";
+
+const alexandria = Alexandria({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-alexandria",
+});
+
+const bebasNeue = Bebas_Neue({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-bebas-neue",
+});
+
+const karantina = Karantina({
+  subsets: ["latin"],
+  weight: ["300", "400", "700"],
+  variable: "--font-karantina",
+});
+
+const GTM_ID = "GTM-MKWC6JHW";
 
 export const metadata: Metadata = {
   title: "ROTEC Service — Desentupimento, Hidrojateamento e Auto Vácuo desde 1993",
@@ -68,21 +89,21 @@ export const metadata: Metadata = {
   },
   icons: [
     { rel: "icon", url: "/favicon.ico" },
-    { rel: "apple-touch-icon", url: "/favicon.ico" },
+    { rel: "apple-touch-icon", url: "/images/apple-touch-icon.png", sizes: "180x180" },
   ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className={`${alexandria.variable} ${bebasNeue.variable} ${karantina.variable}`}>
+      <GoogleTagManager gtmId={GTM_ID} />
       <head>
-        <GoogleTagManager />
         <StructuredData />
       </head>
       <body className="bg-secondary text-complementary font-body antialiased">
         <noscript>
           <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-MKWC6JHW"
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
             height="0"
             width="0"
             style={{ display: "none", visibility: "hidden" }}

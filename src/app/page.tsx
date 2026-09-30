@@ -1,5 +1,3 @@
-export const revalidate = 3600;
-
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
@@ -24,25 +22,7 @@ export default function Page() {
         <EquipmentSection />
         <ClientsSection />
         <SectionLicencas />
-        <SectionContato
-          phone="(11) 4195-9000"
-          whatsapp="5511947850224"
-          email="rotec@rotecservice.com.br"
-          socials={[
-            {
-              name: "Instagram",
-              href: "https://www.instagram.com/rotecservice/",
-              iconPath: "/images/redes/instagram.svg"
-            },
-            {
-              name: "LinkedIn",
-              href: "https://www.linkedin.com/company/rotecservice/",
-              iconPath: "/images/redes/linkedin.svg"
-            }
-          ]}
-          whatsMessage="Olá! Vim pelo site da ROTEC e gostaria de um orçamento."
-          pepeSrc="/images/mascotes/pepe.svg"
-        />
+        <SectionContato />
       </main>
       <Footer />
     </>

@@ -17,11 +17,19 @@ describe("SectionContato", () => {
       "href",
       `https://wa.me/5511947850224?text=${encodeURIComponent("Olá! Quero um orçamento.")}`
     );
-    expect(screen.getByRole("link", { name: "(11) 4195-9000" })).toHaveAttribute("href", "tel:1141959000");
+    expect(screen.getByRole("link", { name: "(11) 4195-9000" })).toHaveAttribute("href", "tel:+551141959000");
     expect(screen.getByRole("link", { name: "rotec@rotecservice.com.br" })).toHaveAttribute(
       "href",
       "mailto:rotec@rotecservice.com.br"
     );
+  });
+
+  it("uses the company contacts by default", () => {
+    render(<SectionContato />);
+
+    expect(screen.getByRole("link", { name: "(11) 4195-9000" })).toHaveAttribute("href", "tel:+551141959000");
+    expect(screen.getByRole("link", { name: "rotec@rotecservice.com.br" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Instagram" })).toHaveAttribute("href", "https://www.instagram.com/rotecservice/");
   });
 
   it("highlights the call to action of the title", () => {
