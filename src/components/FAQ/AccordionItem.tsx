@@ -17,12 +17,12 @@ export default function AccordionItem({ item, open, onToggle }: Props) {
         onClick={onToggle}
       >
         <span className="font-title font-bold text-xl sm:text-2xl">
-          {open ? "▾" : "▸"} {item.title}
+          {item.title}
         </span>
         <span
           aria-hidden
           className={`rounded-full border w-7 h-7 grid place-items-center transition ${
-            open ? "rotate-180" : ""
+            open ? "rotate-90" : ""
           }`}
         >
           ❯

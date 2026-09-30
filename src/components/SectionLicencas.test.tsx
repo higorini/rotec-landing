@@ -30,6 +30,7 @@ describe("SectionLicencas", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /SABESP/ }));
     expect(screen.getByRole("dialog", { name: "SABESP" })).toBeInTheDocument();
+    expect(screen.getByText(/A ROTEC Service é constantemente fiscalizada/)).toBeInTheDocument();
 
     fireEvent.keyDown(document, { key: "Escape" });
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();

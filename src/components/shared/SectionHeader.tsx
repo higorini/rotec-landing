@@ -5,6 +5,7 @@ interface SectionHeaderProps {
   subtitle?: string;
   centered?: boolean;
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl';
+  tone?: 'dark' | 'light';
   className?: string;
   children?: ReactNode;
 }
@@ -14,6 +15,7 @@ export default function SectionHeader({
   subtitle,
   centered = true,
   maxWidth = 'lg',
+  tone = 'dark',
   className = '',
   children,
 }: SectionHeaderProps) {
@@ -24,13 +26,15 @@ export default function SectionHeader({
     xl: 'max-w-4xl',
   };
 
+  const subtitleColor = tone === 'light' ? 'text-secondary/80' : 'text-gray-600';
+
   return (
     <header className={`${centered ? 'text-center' : ''} ${widthMap[maxWidth]} ${centered ? 'mx-auto' : ''} ${className}`}>
       <h2 className="font-display tracking-[0.2em] text-3xl sm:text-4xl">
         {title}
       </h2>
       {subtitle && (
-        <p className="text-sm sm:text-base text-gray-600" style={{ marginTop: 'var(--space-md)' }}>
+        <p className={`text-sm sm:text-base ${subtitleColor}`} style={{ marginTop: 'var(--space-md)' }}>
           {subtitle}
         </p>
       )}

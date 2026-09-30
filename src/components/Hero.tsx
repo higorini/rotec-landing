@@ -23,7 +23,7 @@ export default function Hero() {
       <div className="relative z-10 flex min-h-[100svh] items-center justify-center">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
-            <p className="uppercase tracking-[0.10em] lg:tracking-[0.20em] text-3xl sm:text-xl lg:text-4xl opacity-95">
+            <p className="uppercase tracking-[0.10em] lg:tracking-[0.20em] text-3xl lg:text-4xl opacity-95">
               Fundada em 1993
             </p>
 
@@ -32,7 +32,7 @@ export default function Hero() {
               ROTEC SERVICE
             </h1>
 
-            <p className="mt-4 text-xl sm:text-base lg:text-2xl opacity-95">
+            <p className="mt-4 text-xl lg:text-2xl opacity-95">
               O que você não vê mantém o seu negócio funcionando.
             </p>
 
@@ -41,7 +41,7 @@ export default function Hero() {
                 href={buildWhatsHref()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl border-2 border-white/90 px-8 py-3 text-2xl sm:text-xl lg:text-4xl font-semibold hover:bg-white/10 active:scale-[0.99] transition"
+                className="inline-flex items-center gap-2 rounded-xl border-2 border-white/90 px-8 py-3 text-2xl lg:text-4xl font-semibold hover:bg-white/10 active:scale-[0.99] transition"
               >
                 Fale Conosco
               </a>

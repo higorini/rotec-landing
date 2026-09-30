@@ -29,35 +29,35 @@ export default function SectionContato({
 
   return (
     <section id="contato" className="full-bleed bg-white">
-      <div className="mx-auto grid max-w-[1600px] grid-cols-1 items-stretch gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16 lg:py-28">
+      <div className="container mx-auto grid grid-cols-1 items-stretch gap-12 px-4 sm:px-6 lg:px-8 py-20 lg:grid-cols-2 lg:gap-16 lg:py-28">
         <div className="flex flex-col justify-center">
-          <h2 className="max-w-2xl font-serif text-4xl font-bold leading-tight text-zinc-900 sm:text-5xl">
+          <h2 className="max-w-2xl font-body text-3xl font-bold leading-tight text-complementary sm:text-4xl">
             {formatTitle(title)}
           </h2>
-          <p className="mt-6 max-w-xl text-zinc-600">{subtitle}</p>
+          <p className="mt-6 max-w-xl text-gray-600">{subtitle}</p>
           <div className="mt-8">
             <a href={whatsHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 rounded-xl bg-[var(--color-success)] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-success)]/40">
               <Image src="/images/redes/whatsapp.svg" alt="WhatsApp" width={20} height={20} className="h-5 w-5 brightness-0 invert" />
               Seja atendido no WhatsApp
             </a>
           </div>
-          <div className="mt-8 flex flex-col gap-4 text-zinc-700">
+          <div className="mt-8 flex flex-col gap-4 text-gray-700">
             <div className="flex items-center gap-3">
-              <Phone className="h-5 w-5 text-zinc-500" />
+              <Phone className="h-5 w-5 text-gray-500" />
               <a href={`tel:+55${onlyDigits(phone)}`} className="hover:underline">{phone}</a>
             </div>
             <div className="flex items-center gap-3">
-              <Mail className="h-5 w-5 text-zinc-500" />
+              <Mail className="h-5 w-5 text-gray-500" />
               <a href={`mailto:${email}`} className="hover:underline">{email}</a>
             </div>
           </div>
           <div className="mt-10">
-            <p className="mb-3 text-sm font-semibold tracking-wide text-zinc-500">Siga-nos</p>
+            <p className="mb-3 text-sm font-semibold tracking-wide text-gray-500">Siga-nos</p>
             <div className="flex items-center gap-3">
               {socials.map((social, index) => {
                 if (!social.iconPath) return null;
                 return (
-                  <a key={`${social.name}-${index}`} href={social.href} target="_blank" rel="noopener noreferrer" className="grid h-10 w-10 place-items-center rounded-full border border-zinc-200 bg-white shadow-sm transition hover:scale-105" aria-label={social.name} title={social.name}>
+                  <a key={`${social.name}-${index}`} href={social.href} target="_blank" rel="noopener noreferrer" className="grid h-10 w-10 place-items-center rounded-full border border-gray-200 bg-white shadow-sm transition hover:scale-105" aria-label={social.name} title={social.name}>
                     <Image src={social.iconPath} alt={`Ícone ${social.name}`} width={20} height={20} className="h-5 w-5" />
                   </a>
                 );

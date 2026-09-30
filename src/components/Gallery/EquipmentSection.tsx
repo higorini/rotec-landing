@@ -21,6 +21,7 @@ export default function EquipmentSection() {
           title="NOSSO EQUIPAMENTO"
           subtitle="Arraste para o lado no celular. Em telas maiores, clique para ampliar."
           maxWidth="lg"
+          tone="light"
         />
 
         <div className="mt-8 sm:mt-10 max-w-7xl mx-auto">

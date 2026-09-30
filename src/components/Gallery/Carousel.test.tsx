@@ -87,6 +87,7 @@ describe("Carousel", () => {
     const { container } = render(<Carousel photos={PHOTOS} />);
 
     expect(visibleSources(container)).toEqual(["/p-0.jpeg"]);
-    expect(screen.getAllByRole("button", { name: /Ir para página/ })).toHaveLength(6);
+    expect(screen.getByText("1 / 6")).toBeInTheDocument();
+    expect(screen.queryAllByRole("button", { name: /Ir para página/ })).toHaveLength(0);
   });
 });

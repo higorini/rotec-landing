@@ -154,34 +154,40 @@ export default function Carousel({ photos, onOpenLightbox, keyboardEnabled = tru
         <button
           onClick={prev}
           disabled={isTransitioning}
-          className="grid place-items-center rounded-full border w-10 h-10 text-primary bg-white/90 hover:bg-white shadow transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="grid shrink-0 place-items-center rounded-full border w-10 h-10 text-primary bg-white/90 hover:bg-white shadow transition disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Página anterior"
         >
           ‹
         </button>
 
-        <div className="flex items-center justify-center gap-2">
-          {Array.from({ length: totalPages }).map((_, i) => (
-            <button
-              key={i}
-              onClick={() => {
-                if (!isTransitioning) {
-                  goToPage(i);
-                }
-              }}
-              disabled={isTransitioning}
-              className={`h-2 w-2 rounded-full transition ${
-                page === i ? "bg-primary" : "bg-gray-400/50 hover:bg-gray-500/70"
-              } disabled:cursor-not-allowed`}
-              aria-label={`Ir para página ${i + 1}`}
-            />
-          ))}
-        </div>
+        {isMobile ? (
+          <span aria-live="polite" className="text-sm font-semibold tabular-nums">
+            {page + 1} / {totalPages}
+          </span>
+        ) : (
+          <div className="flex items-center justify-center gap-2">
+            {Array.from({ length: totalPages }).map((_, i) => (
+              <button
+                key={i}
+                onClick={() => {
+                  if (!isTransitioning) {
+                    goToPage(i);
+                  }
+                }}
+                disabled={isTransitioning}
+                className={`h-2 w-2 rounded-full transition ${
+                  page === i ? "bg-primary" : "bg-gray-400/50 hover:bg-gray-500/70"
+                } disabled:cursor-not-allowed`}
+                aria-label={`Ir para página ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
 
         <button
           onClick={next}
           disabled={isTransitioning}
-          className="grid place-items-center rounded-full border w-10 h-10 text-primary bg-white/90 hover:bg-white shadow transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="grid shrink-0 place-items-center rounded-full border w-10 h-10 text-primary bg-white/90 hover:bg-white shadow transition disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Próxima página"
         >
           ›

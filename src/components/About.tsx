@@ -155,7 +155,7 @@ export default function AboutTabs() {
               className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
                 active === tab.id
                   ? "bg-primary text-white shadow-soft"
-                  : "bg-white text-zinc-700 border border-zinc-300 hover:bg-zinc-100"
+                  : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
               }`}
               aria-pressed={active === tab.id}
             >
@@ -166,7 +166,7 @@ export default function AboutTabs() {
 
         <div className="relative mx-auto max-w-6xl lock-to-max" style={{ minHeight: maxHeight || undefined }}>
           <div className="mx-auto fade-in">
-            <h2 className="font-display text-3xl sm:text-4xl text-slate-900 mb-6">
+            <h2 className="font-display text-3xl sm:text-4xl text-complementary mb-6">
               {activeTab.title.toUpperCase()}
             </h2>
 
@@ -178,7 +178,7 @@ export default function AboutTabs() {
           <div className="measure-bank" aria-hidden inert>
             {TABS.map((tab) => (
               <div key={`bank-${tab.id}`} ref={setBankRef(tab.id)} className="mx-auto">
-                <h2 className="font-display text-3xl sm:text-4xl text-slate-900 mb-6">
+                <h2 className="font-display text-3xl sm:text-4xl text-complementary mb-6">
                   {tab.title.toUpperCase()}
                 </h2>
                 <div className="text-left sm:text-justify text-complementary leading-relaxed text-xl lg:text-2xl space-y-6">

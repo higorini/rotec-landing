@@ -21,13 +21,14 @@ export default function ServicesSection() {
           title="NOSSOS SERVIÇOS"
           subtitle="Atendemos residencial, empresarial e industrial com segurança, agilidade e eficiência. Clique em um serviço para ver os detalhes."
           maxWidth="lg"
+          tone="light"
         />
 
         <div className="mt-8 sm:mt-10 max-w-7xl mx-auto">
           <div
             className="
               grid gap-4 sm:gap-6 justify-items-center
-              grid-cols-2
+              grid-cols-1
               sm:[grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]
             "
           >
