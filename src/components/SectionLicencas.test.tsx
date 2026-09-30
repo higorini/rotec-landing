@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import SectionLicencas from "./SectionLicencas";
 
@@ -11,7 +11,7 @@ describe("SectionLicencas", () => {
     );
   });
 
-  it("opens the agency details and closes with the close button", () => {
+  it("opens the agency details and closes with the close button", async () => {
     render(<SectionLicencas />);
 
     fireEvent.click(screen.getByRole("button", { name: /CETESB/ }));
@@ -21,8 +21,9 @@ describe("SectionLicencas", () => {
     expect(document.body.style.overflow).toBe("hidden");
 
     fireEvent.click(screen.getByRole("button", { name: "Fechar" }));
-    expect(screen.queryByText(/papel ambiental da empresa/)).not.toBeInTheDocument();
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(document.body.style.overflow).toBe("");
+    await waitFor(() => expect(screen.queryByText(/papel ambiental da empresa/)).not.toBeInTheDocument());
   });
 
   it("opens the agency details as an accessible dialog that closes with Escape", () => {

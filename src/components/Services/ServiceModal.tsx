@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default function ServiceModal({ open, service, onClose }: Props) {
-  if (!open || !service) return null;
+  if (!service) return null;
 
   return (
     <Modal

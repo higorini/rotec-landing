@@ -32,10 +32,11 @@ export default function ServicesSection() {
               sm:[grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]
             "
           >
-            {SERVICES.map((svc) => (
+            {SERVICES.map((svc, index) => (
               <ServiceCard
                 key={svc.id}
                 service={svc}
+                index={index}
                 onClick={(s) => { setCurrent(s); setOpen(true); }}
               />
             ))}
@@ -46,10 +47,7 @@ export default function ServicesSection() {
       <ServiceModal
         open={open}
         service={current}
-        onClose={() => {
-          setOpen(false);
-          setCurrent(null);
-        }}
+        onClose={() => setOpen(false)}
       />
     </section>
   );

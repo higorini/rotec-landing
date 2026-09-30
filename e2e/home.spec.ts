@@ -64,8 +64,7 @@ test.describe("home", () => {
   });
 
   test("keeps FAQ answers fully visible after resizing", async ({ page }) => {
-    await page.getByRole("button", { name: /Desentupimento — Como funciona/ }).click();
-    await page.waitForTimeout(400);
+    await expect(page.getByRole("button", { name: /Desentupimento — Como funciona/ })).toHaveAttribute("aria-expanded", "true");
     await page.setViewportSize({ width: 320, height: 800 });
     await page.waitForTimeout(400);
 

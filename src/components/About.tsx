@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, useCallback, ReactElement } from "react";
+import { useEffect, useMemo, useRef, useState, ReactElement } from "react";
 import { buildWhatsHref } from "@/lib/contact";
 
 type Tab = {
@@ -8,6 +8,13 @@ type Tab = {
   title: string;
   content: ReactElement;
 };
+
+type Pill = { left: number; top: number; width: number; height: number };
+
+function pillFor(button: HTMLButtonElement | null | undefined): Pill | null {
+  if (!button) return null;
+  return { left: button.offsetLeft, top: button.offsetTop, width: button.offsetWidth, height: button.offsetHeight };
+}
 
 export default function AboutTabs() {
   const [active, setActive] = useState("empresa");
@@ -107,55 +114,49 @@ export default function AboutTabs() {
     []
   );
 
-  const bankRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const [maxHeight, setMaxHeight] = useState<number>(0);
-
-  const setBankRef = useCallback(
-    (id: string) => (el: HTMLDivElement | null) => {
-      bankRefs.current[id] = el;
-    },
-    []
-  );
+  const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const listRef = useRef<HTMLDivElement>(null);
+  const activeRef = useRef(active);
+  const [pill, setPill] = useState<Pill | null>(null);
 
   useEffect(() => {
-    const els = Object.values(bankRefs.current).filter(
-      (el): el is HTMLDivElement => !!el
-    );
-    if (!els.length) return;
-
-    const compute = () => {
-      const h = Math.max(...els.map((el) => el.scrollHeight));
-      setMaxHeight(h);
-    };
-
-    compute();
-
-    const ros = els.map(() => new ResizeObserver(compute));
-    ros.forEach((ro, i) => ro.observe(els[i]!));
-
-    const onResize = () => compute();
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      ros.forEach((ro) => ro.disconnect());
-      window.removeEventListener("resize", onResize);
-    };
+    const list = listRef.current;
+    if (!list) return;
+    const observer = new ResizeObserver(() => setPill(pillFor(tabRefs.current[activeRef.current])));
+    observer.observe(list);
+    return () => observer.disconnect();
   }, []);
 
-  const activeTab = TABS.find((t) => t.id === active)!;
+  const select = (id: string, button: HTMLButtonElement) => {
+    activeRef.current = id;
+    setActive(id);
+    setPill(pillFor(button));
+  };
+
+  const activeIndex = TABS.findIndex((t) => t.id === active);
 
   return (
     <section id="sobre" className="py-16 sm:py-20 lg:py-24 bg-white full-bleed">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl text-center">
-        <div className="flex flex-wrap justify-center gap-3 mb-6">
+        <div ref={listRef} className="relative flex flex-wrap justify-center gap-3 mb-6">
+          {pill && (
+            <span
+              aria-hidden
+              className="absolute rounded-full bg-primary shadow-soft transition-all duration-300 ease-out motion-reduce:transition-none"
+              style={pill}
+            />
+          )}
           {TABS.map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActive(tab.id)}
-              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+              ref={(el) => {
+                tabRefs.current[tab.id] = el;
+              }}
+              onClick={(e) => select(tab.id, e.currentTarget)}
+              className={`relative px-4 py-2 rounded-full border text-sm font-semibold transition-colors duration-300 ${
                 active === tab.id
-                  ? "bg-primary text-white shadow-soft"
-                  : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
+                  ? `text-white border-transparent ${pill ? "" : "bg-primary"}`
+                  : "text-gray-700 border-gray-300 hover:bg-gray-100"
               }`}
               aria-pressed={active === tab.id}
             >
@@ -164,29 +165,33 @@ export default function AboutTabs() {
           ))}
         </div>
 
-        <div className="relative mx-auto max-w-6xl lock-to-max" style={{ minHeight: maxHeight || undefined }}>
-          <div className="mx-auto fade-in">
-            <h2 className="font-display text-3xl sm:text-4xl text-complementary mb-6">
-              {activeTab.title.toUpperCase()}
-            </h2>
-
-            <div className="text-left sm:text-justify text-complementary leading-relaxed text-xl lg:text-2xl space-y-6">
-              {activeTab.content}
-            </div>
-          </div>
-
-          <div className="measure-bank" aria-hidden inert>
-            {TABS.map((tab) => (
-              <div key={`bank-${tab.id}`} ref={setBankRef(tab.id)} className="mx-auto">
+        <div className="grid mx-auto max-w-6xl overflow-x-clip">
+          {TABS.map((tab, index) => {
+            const isActive = index === activeIndex;
+            const offset = index < activeIndex ? "-translate-x-6" : "translate-x-6";
+            return (
+              <div
+                key={tab.id}
+                data-tab-panel={tab.id}
+                data-active={isActive}
+                aria-hidden={!isActive || undefined}
+                inert={!isActive}
+                className={`col-start-1 row-start-1 mx-auto transition-[opacity,translate] ease-out ${
+                  isActive
+                    ? "opacity-100 translate-x-0 duration-300 delay-100"
+                    : `opacity-0 pointer-events-none duration-150 ${offset} motion-reduce:translate-x-0`
+                }`}
+              >
                 <h2 className="font-display text-3xl sm:text-4xl text-complementary mb-6">
                   {tab.title.toUpperCase()}
                 </h2>
+
                 <div className="text-left sm:text-justify text-complementary leading-relaxed text-xl lg:text-2xl space-y-6">
                   {tab.content}
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
 
         <div className="mt-10">

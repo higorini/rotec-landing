@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { usePresence } from "@/lib/usePresence";
 
 const NAV_LINKS = [
   { href: "#sobre", label: "Sobre" },
@@ -16,6 +17,7 @@ const NAV_LINKS = [
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const menu = usePresence(open);
 
   
   useEffect(() => {
@@ -33,58 +35,66 @@ export default function Header() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 bg-secondary/95 backdrop-blur border-b" style={{ zIndex: 'var(--z-header)' }}>
+    <>
+      <header className="sticky top-0 bg-secondary/95 backdrop-blur border-b" style={{ zIndex: 'var(--z-header)' }}>
       
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3">
         
-        <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between">
           
-          <Link
-            href="/"
-            aria-label="ROTEC Service — página inicial"
-            className="flex items-center gap-2 shrink-0"
-          >
-            <Image
-              src="/images/logo.svg"
-              alt="ROTEC Service"
-              width={0}
-              height={0}
-              sizes="100vw"
-              priority
-              className="w-28 sm:w-36 lg:w-44 h-auto object-contain"
-            />
-          </Link>
+            <Link
+              href="/"
+              aria-label="ROTEC Service — página inicial"
+              className="flex items-center gap-2 shrink-0"
+            >
+              <Image
+                src="/images/logo.svg"
+                alt="ROTEC Service"
+                width={0}
+                height={0}
+                sizes="100vw"
+                priority
+                className="w-28 sm:w-36 lg:w-44 h-auto object-contain"
+              />
+            </Link>
 
           
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-2xl xl:text-3xl font-display whitespace-nowrap">
-            {NAV_LINKS.map((link) => (
-              <a key={link.href} href={link.href} className="hover:opacity-80">{link.label}</a>
-            ))}
-          </nav>
+            <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-2xl xl:text-3xl font-display whitespace-nowrap">
+              {NAV_LINKS.map((link) => (
+                <a key={link.href} href={link.href} className="hover:opacity-80">{link.label}</a>
+              ))}
+            </nav>
 
           
-          <button
-            aria-label="Abrir menu"
-            aria-expanded={open}
-            onClick={() => setOpen(true)}
-            className="lg:hidden rounded-full border w-10 h-10 grid place-items-center shadow-[var(--shadow-soft)]"
-          >
-            <span aria-hidden>≡</span>
-          </button>
+            <button
+              aria-label="Abrir menu"
+              aria-expanded={open}
+              onClick={() => setOpen(true)}
+              className="lg:hidden rounded-full border w-10 h-10 grid place-items-center shadow-[var(--shadow-soft)]"
+            >
+              <span aria-hidden>≡</span>
+            </button>
+          </div>
         </div>
-      </div>
 
       
-      {open && (
+      </header>
+
+      {menu.rendered && (
         <div
-          className="fixed inset-0 bg-black/60"
+          className="motion-backdrop fixed inset-0 bg-black/60"
           style={{ zIndex: 'var(--z-overlay)' }}
+          data-state={menu.state}
+          onTransitionEnd={menu.onTransitionEnd}
+          inert={menu.state === "closed"}
+          aria-hidden={menu.state === "closed" || undefined}
           role="dialog"
           aria-modal="true"
           onClick={() => setOpen(false)}
         >
           <aside
-            className="absolute right-0 top-0 h-[100svh] w-[88%] max-w-xs bg-secondary border-l shadow-[var(--shadow-hover)]"
+            data-state={menu.state}
+            className="motion-drawer absolute right-0 top-0 h-[100svh] w-[88%] max-w-xs bg-secondary border-l shadow-[var(--shadow-hover)]"
             onClick={(e) => e.stopPropagation()}
           >
             <div
@@ -122,6 +132,6 @@ export default function Header() {
           </aside>
         </div>
       )}
-    </header>
+    </>
   );
 }

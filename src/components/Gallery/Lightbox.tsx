@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import useEmblaCarousel from 'embla-carousel-react';
+import { usePresence } from '@/lib/usePresence';
 import type { GalleryImage } from './types';
 
 type Props = {
@@ -14,11 +15,16 @@ type Props = {
 };
 
 export default function Lightbox({ open, ...props }: Props) {
-  if (!open) return null;
-  return <LightboxContent {...props} />;
+  const presence = usePresence(open);
+  if (!presence.rendered) return null;
+  return <LightboxContent {...props} open={open} state={presence.state} onTransitionEnd={presence.onTransitionEnd} />;
 }
 
-function LightboxContent({ index, photos, onClose, onIndex }: Omit<Props, 'open'>) {
+type ContentProps = Omit<Props, 'open'> & Pick<ReturnType<typeof usePresence>, 'state' | 'onTransitionEnd'> & {
+  open: boolean;
+};
+
+function LightboxContent({ open, state, onTransitionEnd, index, photos, onClose, onIndex }: ContentProps) {
   const [mainRef, mainApi] = useEmblaCarousel({ loop: true, startIndex: index });
   const [thumbsRef, thumbsApi] = useEmblaCarousel({ containScroll: 'keepSnaps', dragFree: true });
   const [selected, setSelected] = useState(index);
@@ -50,6 +56,7 @@ function LightboxContent({ index, photos, onClose, onIndex }: Omit<Props, 'open'
   const next = useCallback(() => mainApi?.scrollNext(), [mainApi]);
 
   useEffect(() => {
+    if (!open) return;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
@@ -64,11 +71,15 @@ function LightboxContent({ index, photos, onClose, onIndex }: Omit<Props, 'open'
       document.body.style.overflow = prevOverflow;
       document.removeEventListener('keydown', onKey);
     };
-  }, [onClose, next, prev]);
+  }, [open, onClose, next, prev]);
 
   return (
     <div
-      className="fixed inset-0 z-[var(--z-modal)] flex flex-col bg-black/85 backdrop-blur-sm"
+      className="motion-backdrop fixed inset-0 z-[var(--z-modal)] flex flex-col bg-black/85 backdrop-blur-sm"
+      data-state={state}
+      onTransitionEnd={onTransitionEnd}
+      inert={state === 'closed'}
+      aria-hidden={state === 'closed' || undefined}
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -87,7 +98,7 @@ function LightboxContent({ index, photos, onClose, onIndex }: Omit<Props, 'open'
         </button>
       </div>
 
-      <div className="relative min-h-0 flex-1">
+      <div data-state={state} className="motion-zoom relative min-h-0 flex-1">
         <div ref={mainRef} className="h-full overflow-hidden">
           <div className="flex h-full touch-pan-y">
             {photos.map((photo, i) => (

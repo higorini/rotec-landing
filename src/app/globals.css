@@ -47,6 +47,10 @@
   --z-float: 30;
   --z-modal: 80;
   --z-overlay: 100;
+
+  /* Movimento */
+  --motion-enter: 200ms;
+  --motion-exit: 150ms;
 }
 
 /* Reset padrão */
@@ -105,21 +109,6 @@ button {
     letter-spacing: 0.25em;
   }
 
-  /* Altura Dinâmica */
-  .lock-to-max {
-    transition: min-height 0.35s ease;
-    position: relative;
-  }
-
-  /* Medidor Invisível */
-  .measure-bank {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    pointer-events: none;
-    z-index: -1;
-  }
-
   /* Fade In Animation */
   .fade-in {
     animation: fadeInSmooth 0.25s ease;
@@ -141,9 +130,85 @@ section[id] {
   scroll-margin-top: var(--header-offset);
 }
 
+/* Flutuação (ícones clicáveis) */
+.animate-float {
+  animation: float 3.2s ease-in-out infinite;
+}
+
+/* Entrada e saída de modais */
+.motion-backdrop,
+.motion-pop,
+.motion-zoom,
+.motion-drawer {
+  transition-property: opacity, transform;
+  transition-duration: var(--motion-enter);
+  transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.motion-backdrop[data-state="closed"],
+.motion-pop[data-state="closed"],
+.motion-zoom[data-state="closed"],
+.motion-drawer[data-state="closed"] {
+  transition-duration: var(--motion-exit);
+  transition-timing-function: ease-in;
+}
+
+.motion-backdrop[data-state="closed"] {
+  opacity: 0;
+}
+
+.motion-pop[data-state="closed"] {
+  opacity: 0;
+  transform: translateY(0.75rem) scale(0.97);
+}
+
+.motion-zoom[data-state="closed"] {
+  opacity: 0;
+  transform: scale(0.94);
+}
+
+.motion-drawer[data-state="closed"] {
+  transform: translateX(100%);
+}
+
+@starting-style {
+  .motion-backdrop {
+    opacity: 0;
+  }
+
+  .motion-pop {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.97);
+  }
+
+  .motion-zoom {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+
+  .motion-drawer {
+    transform: translateX(100%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track {
+  .marquee-track,
+  .animate-float {
     animation: none;
+  }
+
+  .motion-backdrop,
+  .motion-pop,
+  .motion-zoom,
+  .motion-drawer {
+    transition-property: opacity;
+    transition-duration: 120ms;
+  }
+
+  .motion-pop[data-state="closed"],
+  .motion-zoom[data-state="closed"],
+  .motion-drawer[data-state="closed"] {
+    transform: none;
   }
 }
 
@@ -156,6 +221,17 @@ section[id] {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -0.375rem;
   }
 }
 

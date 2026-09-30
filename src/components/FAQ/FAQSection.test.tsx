@@ -4,26 +4,37 @@ import FAQSection from "./FAQSection";
 import { FAQ_ITEMS } from "./faq.data";
 
 describe("FAQSection", () => {
-  it("renders one collapsed item per FAQ entry", () => {
+  it("starts with the first item open and the others collapsed", () => {
     render(<FAQSection />);
 
     const buttons = screen.getAllByRole("button");
     expect(buttons).toHaveLength(FAQ_ITEMS.length);
-    buttons.forEach((button) => expect(button).toHaveAttribute("aria-expanded", "false"));
+    expect(buttons[0]).toHaveTextContent("Desentupimento");
+    expect(buttons[0]).toHaveAttribute("aria-expanded", "true");
+    buttons.slice(1).forEach((button) => expect(button).toHaveAttribute("aria-expanded", "false"));
   });
 
-  it("keeps only one item open at a time", () => {
+  it("keeps the open item open when clicked again", () => {
     render(<FAQSection />);
-    const [first, second] = screen.getAllByRole("button");
+    const [first] = screen.getAllByRole("button");
 
     fireEvent.click(first);
+
     expect(first).toHaveAttribute("aria-expanded", "true");
+    expect(first).toHaveAttribute("aria-disabled", "true");
+  });
+
+  it("keeps exactly one item open", () => {
+    render(<FAQSection />);
+    const [first, second, third] = screen.getAllByRole("button");
 
     fireEvent.click(second);
     expect(first).toHaveAttribute("aria-expanded", "false");
     expect(second).toHaveAttribute("aria-expanded", "true");
 
-    fireEvent.click(second);
+    fireEvent.click(third);
     expect(second).toHaveAttribute("aria-expanded", "false");
+    expect(third).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getAllByRole("button").filter((button) => button.getAttribute("aria-expanded") === "true")).toHaveLength(1);
   });
 });

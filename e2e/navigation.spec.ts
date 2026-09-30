@@ -49,6 +49,22 @@ test.describe("whatsapp button on mobile", () => {
   });
 });
 
+test.describe("mobile menu", () => {
+  test("dims the whole screen and closes when tapping outside", async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== "mobile", "mobile only");
+    await page.goto("/");
+    await page.getByRole("button", { name: "Abrir menu" }).click();
+    const overlay = page.getByRole("dialog");
+    await expect(overlay).toBeVisible();
+
+    const height = await overlay.evaluate((element) => element.getBoundingClientRect().height);
+    expect(height).toBe(page.viewportSize()!.height);
+
+    await page.mouse.click(20, page.viewportSize()!.height - 100);
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+  });
+});
+
 test.describe("desktop navigation", () => {
   for (const width of [1024, 1280, 1440]) {
     test(`fits in one line at ${width}px`, async ({ page }, testInfo) => {

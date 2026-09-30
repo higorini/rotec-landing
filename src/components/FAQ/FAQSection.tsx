@@ -6,7 +6,7 @@ import AccordionItem from './AccordionItem';
 import { FAQ_ITEMS } from './faq.data';
 
 export default function FAQSection() {
-  const [openId, setOpenId] = useState<string | null>(null);
+  const [openId, setOpenId] = useState(FAQ_ITEMS[0].id);
 
   return (
     <section
@@ -30,7 +30,7 @@ export default function FAQSection() {
               key={item.id}
               item={item}
               open={openId === item.id}
-              onToggle={() => setOpenId(openId === item.id ? null : item.id)}
+              onToggle={() => setOpenId(item.id)}
             />
           ))}
         </div>

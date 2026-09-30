@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useId, ReactNode } from 'react';
+import { usePresence } from '@/lib/usePresence';
 
 interface ModalProps {
   open: boolean;
@@ -22,6 +23,7 @@ export default function Modal({
   closeOnBackdrop = true,
 }: ModalProps) {
   const titleId = useId();
+  const { rendered, state, onTransitionEnd } = usePresence(open);
 
   useEffect(() => {
     if (!open) return;
@@ -41,7 +43,7 @@ export default function Modal({
     return () => document.removeEventListener('keydown', handleKey);
   }, [open, onClose]);
 
-  if (!open) return null;
+  if (!rendered) return null;
 
   const sizeMap = {
     sm: 'max-w-sm',
@@ -52,14 +54,19 @@ export default function Modal({
 
   return (
     <div
-      className="fixed inset-0 z-[var(--z-modal)] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+      className="motion-backdrop fixed inset-0 z-[var(--z-modal)] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+      data-state={state}
+      onTransitionEnd={onTransitionEnd}
+      inert={state === 'closed'}
+      aria-hidden={state === 'closed' || undefined}
       role="dialog"
       aria-modal="true"
       aria-labelledby={title ? titleId : undefined}
       onClick={() => closeOnBackdrop && onClose()}
     >
       <article
-        className={`max-h-[90svh] w-full ${sizeMap[size]} rounded-[var(--radius-xl)] bg-secondary text-complementary shadow-[var(--shadow-hover)] overflow-auto`}
+        data-state={state}
+        className={`motion-pop max-h-[90svh] w-full ${sizeMap[size]} rounded-[var(--radius-xl)] bg-secondary text-complementary shadow-[var(--shadow-hover)] overflow-auto`}
         onClick={(e) => e.stopPropagation()}
       >
         {(title || showCloseButton) && (

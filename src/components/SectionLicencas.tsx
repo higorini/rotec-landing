@@ -34,7 +34,8 @@ const LICENCAS: Record<
 };
 
 export default function SectionLicencas() {
-  const [open, setOpen] = useState<LicencaKey | null>(null);
+  const [selected, setSelected] = useState<LicencaKey>("IBAMA");
+  const [open, setOpen] = useState(false);
 
   return (
     <>
@@ -80,13 +81,16 @@ export default function SectionLicencas() {
                 </p>
 
                 <ul className="grid grid-cols-3 gap-6 sm:gap-8">
-                    {(Object.keys(LICENCAS) as LicencaKey[]).map((key) => (
+                    {(Object.keys(LICENCAS) as LicencaKey[]).map((key, index) => (
                         <li key={key} className="group">
                             <button
-                            onClick={() => setOpen(key)}
-                            className="flex w-full flex-col items-center gap-3 rounded-2xl bg-black/25 p-5 ring-1 ring-white/10 transition hover:bg-black/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            onClick={() => { setSelected(key); setOpen(true); }}
+                            className="flex w-full flex-col items-center gap-3 rounded-2xl bg-black/25 p-5 ring-1 ring-white/10 transition hover:-translate-y-1 hover:bg-black/40 hover:ring-accent/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                             >
-                            <div className="relative aspect-square w-24 sm:w-28">
+                            <div
+                                className="relative aspect-square w-24 sm:w-28 animate-float"
+                                style={{ animationDelay: `${index * -1.1}s` }}
+                            >
                                 <Image
                                 src={LICENCAS[key].logo}
                                 alt={LICENCAS[key].alt}
@@ -97,8 +101,9 @@ export default function SectionLicencas() {
                             <span className="text-sm font-medium tracking-wide text-secondary">
                                 {LICENCAS[key].title}
                             </span>
-                            <span className="text-[11px] uppercase tracking-widest text-secondary/70">
-                                Saiba mais
+                            <span className="text-xs font-semibold uppercase tracking-widest text-accent">
+                                Saiba mais{" "}
+                                <span aria-hidden className="inline-block transition group-hover:translate-x-1">→</span>
                             </span>
                             </button>
                         </li>
@@ -109,26 +114,24 @@ export default function SectionLicencas() {
     </section>
 
     <Modal
-      open={open !== null}
-      onClose={() => setOpen(null)}
-      title={open ? LICENCAS[open].title : undefined}
+      open={open}
+      onClose={() => setOpen(false)}
+      title={LICENCAS[selected].title}
       size="xl"
     >
-      {open && (
-        <div className="flex flex-col items-center text-center">
-          <div className="relative aspect-square w-32 mb-6">
-            <Image
-              src={LICENCAS[open].logo}
-              alt={LICENCAS[open].alt}
-              fill
-              className="object-contain"
-            />
-          </div>
-          <p className="text-gray-700 leading-relaxed max-w-xl">
-            {LICENCAS[open].resumo}
-          </p>
+      <div className="flex flex-col items-center text-center">
+        <div className="relative aspect-square w-32 mb-6">
+          <Image
+            src={LICENCAS[selected].logo}
+            alt={LICENCAS[selected].alt}
+            fill
+            className="object-contain"
+          />
         </div>
-      )}
+        <p className="text-gray-700 leading-relaxed max-w-xl">
+          {LICENCAS[selected].resumo}
+        </p>
+      </div>
     </Modal>
     </>
   );

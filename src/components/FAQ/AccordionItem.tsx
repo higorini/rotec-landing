@@ -12,9 +12,10 @@ export default function AccordionItem({ item, open, onToggle }: Props) {
   return (
     <div className="rounded-2xl border shadow-[var(--shadow-soft)] bg-white">
       <button
-        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
+        className={`w-full flex items-center justify-between gap-4 px-5 py-4 text-left ${open ? "cursor-default" : ""}`}
         aria-expanded={open}
-        onClick={onToggle}
+        aria-disabled={open || undefined}
+        onClick={open ? undefined : onToggle}
       >
         <span className="font-title font-bold text-xl sm:text-2xl">
           {item.title}
