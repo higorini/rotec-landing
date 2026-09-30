@@ -12,6 +12,16 @@ describe("ServicesSection", () => {
     );
   });
 
+  it("uses the shared icon set on the service cards", () => {
+    render(<ServicesSection />);
+
+    SERVICES.forEach((service) =>
+      expect(
+        screen.getByRole("button", { name: `Abrir informações de ${service.title}` }).querySelector("svg.lucide")
+      ).toBeInTheDocument()
+    );
+  });
+
   it("opens the service details and closes with Escape", () => {
     render(<ServicesSection />);
 

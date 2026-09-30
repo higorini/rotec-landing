@@ -44,6 +44,7 @@
 
   /* Z-index (NOVO) */
   --z-header: 40;
+  --z-float: 30;
   --z-modal: 80;
   --z-overlay: 100;
 }

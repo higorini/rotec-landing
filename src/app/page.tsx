@@ -8,6 +8,7 @@ import ClientsSection from "@/components/Clients/ClientsSection";
 import SectionLicencas from "@/components/SectionLicencas";
 import SectionContato from "@/components/SectionContato";
 import Footer from "@/components/Footer";
+import WhatsAppFloat from "@/components/WhatsAppFloat";
 
 export default function Page() {
   return (
@@ -25,6 +26,7 @@ export default function Page() {
         <SectionContato />
       </main>
       <Footer />
+      <WhatsAppFloat />
     </>
   );
 }

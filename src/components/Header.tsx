@@ -3,7 +3,16 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { buildWhatsHref } from "@/lib/contact";
+
+const NAV_LINKS = [
+  { href: "#sobre", label: "Sobre" },
+  { href: "#servicos", label: "Serviços" },
+  { href: "#faq", label: "Como Funciona" },
+  { href: "#equipamento", label: "Equipamento" },
+  { href: "#clientes", label: "Clientes" },
+  { href: "#licencas", label: "Licenças" },
+  { href: "#contato", label: "Contato" },
+];
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -47,13 +56,10 @@ export default function Header() {
           </Link>
 
           
-          <nav className="hidden md:flex items-center gap-8 text-3xl sm:text-4xl font-display">
-            <a href="#sobre" className="hover:opacity-80">Sobre</a>
-            <a href="#servicos" className="hover:opacity-80">Serviços</a>
-            <a href="#equipamento" className="hover:opacity-80">Equipamento</a>
-            <a href={buildWhatsHref()}
-            target="_blank"
-            rel="noopener noreferrer" className="hover:opacity-80">Contato</a>
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-2xl xl:text-3xl font-display whitespace-nowrap">
+            {NAV_LINKS.map((link) => (
+              <a key={link.href} href={link.href} className="hover:opacity-80">{link.label}</a>
+            ))}
           </nav>
 
           
@@ -61,7 +67,7 @@ export default function Header() {
             aria-label="Abrir menu"
             aria-expanded={open}
             onClick={() => setOpen(true)}
-            className="md:hidden rounded-full border w-10 h-10 grid place-items-center shadow-[var(--shadow-soft)]"
+            className="lg:hidden rounded-full border w-10 h-10 grid place-items-center shadow-[var(--shadow-soft)]"
           >
             <span aria-hidden>≡</span>
           </button>
@@ -102,10 +108,9 @@ export default function Header() {
             </div>
 
             <nav className="px-5 pb-6 grid gap-4 text-2xl font-display">
-              <a href="#sobre" onClick={() => setOpen(false)} className="hover:opacity-80">Sobre</a>
-              <a href="#servicos" onClick={() => setOpen(false)} className="hover:opacity-80">Serviços</a>
-              <a href="#equipamento" onClick={() => setOpen(false)} className="hover:opacity-80">Equipamento</a>
-              <a href="#contato" onClick={() => setOpen(false)} className="hover:opacity-80">Contato</a>
+              {NAV_LINKS.map((link) => (
+                <a key={link.href} href={link.href} onClick={() => setOpen(false)} className="hover:opacity-80">{link.label}</a>
+              ))}
               <a
                 href="#contato"
                 onClick={() => setOpen(false)}

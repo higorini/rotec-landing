@@ -1,4 +1,7 @@
+import { Building2, Clock, Droplets, Factory, Mail, MapPin, MessageCircle, Phone, Siren } from "lucide-react";
 import { buildWhatsHref, CONTACT } from "@/lib/contact";
+
+const ICON = "h-4 w-4 shrink-0";
 
 export default function Footer() {
   return (
@@ -9,9 +12,9 @@ export default function Footer() {
             <div>
               <h3 className="text-lg font-semibold mb-4">Sobre a ROTEC</h3>
               <ul className="space-y-2 text-sm opacity-90">
-                <li>🏢 Atuando desde 1993</li>
-                <li>💧 Desentupimento e Hidrojateamento</li>
-                <li>🏭 Atendimento Residencial, Empresarial e Industrial</li>
+                <li className="flex items-center gap-2"><Building2 aria-hidden className={ICON} />Atuando desde 1993</li>
+                <li className="flex items-center gap-2"><Droplets aria-hidden className={ICON} />Desentupimento e Hidrojateamento</li>
+                <li className="flex items-center gap-2"><Factory aria-hidden className={ICON} />Atendimento Residencial, Empresarial e Industrial</li>
               </ul>
             </div>
 
@@ -19,8 +22,8 @@ export default function Footer() {
               <h3 className="text-lg font-semibold mb-4">Contato</h3>
               <ul className="space-y-2 text-sm opacity-90">
                 <li>
-                  <a href={CONTACT.phoneHref} className="hover:opacity-100 transition-opacity">
-                    📞 {CONTACT.phone}
+                  <a href={CONTACT.phoneHref} className="inline-flex items-center gap-2 hover:opacity-100 transition-opacity">
+                    <Phone aria-hidden className={ICON} />{CONTACT.phone}
                   </a>
                 </li>
                 <li>
@@ -28,14 +31,14 @@ export default function Footer() {
                     href={buildWhatsHref()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:opacity-100 transition-opacity"
+                    className="inline-flex items-center gap-2 hover:opacity-100 transition-opacity"
                   >
-                    💬 {CONTACT.whatsappDisplay}
+                    <MessageCircle aria-hidden className={ICON} />{CONTACT.whatsappDisplay}
                   </a>
                 </li>
                 <li>
-                  <a href={CONTACT.emailHref} className="hover:opacity-100 transition-opacity">
-                    ✉️ {CONTACT.email}
+                  <a href={CONTACT.emailHref} className="inline-flex items-center gap-2 hover:opacity-100 transition-opacity">
+                    <Mail aria-hidden className={ICON} />{CONTACT.email}
                   </a>
                 </li>
               </ul>
@@ -44,9 +47,9 @@ export default function Footer() {
             <div>
               <h3 className="text-lg font-semibold mb-4">Atendimento</h3>
               <ul className="space-y-2 text-sm opacity-90">
-                <li>🕐 Seg a Dom: 08h às 18h</li>
-                <li>🚨 Emergências: 24 horas</li>
-                <li>📍 Grande São Paulo, Barueri e Região</li>
+                <li className="flex items-center gap-2"><Clock aria-hidden className={ICON} />Seg a Dom: 08h às 18h</li>
+                <li className="flex items-center gap-2"><Siren aria-hidden className={ICON} />Emergências: 24 horas</li>
+                <li className="flex items-center gap-2"><MapPin aria-hidden className={ICON} />Grande São Paulo, Barueri e Região</li>
               </ul>
             </div>
           </div>

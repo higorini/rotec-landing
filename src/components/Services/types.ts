@@ -1,8 +1,8 @@
-import type { ComponentType, SVGProps } from "react";
+import type { LucideIcon } from "lucide-react";
 
 export type SegmentList = string[];
 
-export type ServiceIcon = ComponentType<SVGProps<SVGSVGElement>>;
+export type ServiceIcon = LucideIcon;
 
 export type ServiceItem = {
   id: string;

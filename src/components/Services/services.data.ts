@@ -1,11 +1,11 @@
 import { ServiceItem } from "./types";
-import { PipeIcon, JetIcon, VacuumIcon } from "./icons";
+import { Droplets, Truck, Wrench } from "lucide-react";
 
 export const SERVICES: ServiceItem[] = [
   {
     id: "desentupimento",
     title: "Desentupimento",
-    Icon: PipeIcon,
+    Icon: Wrench,
     description:
       "Remoção de obstruções em tubulações, redes de esgoto, caixas de gordura, ralos, vasos sanitários e pias com cabos rotativos e/ou hidrojateamento — sem danificar a estrutura. Testes de fluxo antes da finalização e entrega com garantia.",
     residential: [
@@ -35,7 +35,7 @@ export const SERVICES: ServiceItem[] = [
   {
     id: "hidrojateamento",
     title: "Hidrojateamento de Alta Pressão",
-    Icon: JetIcon,
+    Icon: Droplets,
     description:
       "Jatos de água em alta pressão para limpeza e desobstrução de tubulações, superfícies e equipamentos. Versátil, ecológico e eficaz, com frotas dedicadas ao tipo de limpeza.",
     residential: [
@@ -61,7 +61,7 @@ export const SERVICES: ServiceItem[] = [
   {
     id: "auto-vacuo",
     title: "Auto Vácuo",
-    Icon: VacuumIcon,
+    Icon: Truck,
     description:
       "Caminhões com bombas de sucção para resíduos líquidos e pastosos (tanques, fossas, redes e caixas de gordura) — capacidade até 15 m³ e descarte conforme regulamentação.",
     residential: [
