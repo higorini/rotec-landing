@@ -9,14 +9,17 @@ export function onlyDigits(value: string) {
 }
 
 const PHONE = "(11) 4195-9000";
-const WHATSAPP = "5511947850224";
+const ALTERNATIVE_PHONE = "(11) 96649-6087";
+const WHATSAPP = "5511940302311";
 const EMAIL = "rotec@rotecservice.com.br";
 
 export const CONTACT = {
   phone: PHONE,
   phoneHref: `tel:+55${onlyDigits(PHONE)}`,
+  alternativePhone: ALTERNATIVE_PHONE,
+  alternativePhoneHref: `tel:+55${onlyDigits(ALTERNATIVE_PHONE)}`,
   whatsapp: WHATSAPP,
-  whatsappDisplay: "(11) 94785-0224",
+  whatsappDisplay: "(11) 94030-2311",
   whatsappMessage: "Olá! Vim pelo site da ROTEC e gostaria de um orçamento.",
   email: EMAIL,
   emailHref: `mailto:${EMAIL}`,

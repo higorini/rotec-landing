@@ -7,7 +7,7 @@ describe("SectionContato", () => {
     render(
       <SectionContato
         phone="(11) 4195-9000"
-        whatsapp="55 11 94785-0224"
+        whatsapp="55 11 94030-2311"
         email="rotec@rotecservice.com.br"
         whatsMessage="Olá! Quero um orçamento."
       />
@@ -15,7 +15,7 @@ describe("SectionContato", () => {
 
     expect(screen.getByRole("link", { name: /Seja atendido no WhatsApp/ })).toHaveAttribute(
       "href",
-      `https://wa.me/5511947850224?text=${encodeURIComponent("Olá! Quero um orçamento.")}`
+      `https://wa.me/5511940302311?text=${encodeURIComponent("Olá! Quero um orçamento.")}`
     );
     expect(screen.getByRole("link", { name: "(11) 4195-9000" })).toHaveAttribute("href", "tel:+551141959000");
     expect(screen.getByRole("link", { name: "rotec@rotecservice.com.br" })).toHaveAttribute(
@@ -30,6 +30,17 @@ describe("SectionContato", () => {
     expect(screen.getByRole("link", { name: "(11) 4195-9000" })).toHaveAttribute("href", "tel:+551141959000");
     expect(screen.getByRole("link", { name: "rotec@rotecservice.com.br" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Instagram" })).toHaveAttribute("href", "https://www.instagram.com/rotecservice/");
+    expect(screen.getByRole("link", { name: /Seja atendido no WhatsApp/ })).toHaveAttribute(
+      "href",
+      expect.stringContaining("https://wa.me/5511940302311")
+    );
+  });
+
+  it("offers the alternative phone as a second option", () => {
+    render(<SectionContato />);
+
+    expect(screen.getByText("Contato alternativo:")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "(11) 96649-6087" })).toHaveAttribute("href", "tel:+5511966496087");
   });
 
   it("highlights the call to action of the title", () => {

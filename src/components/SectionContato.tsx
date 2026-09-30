@@ -1,13 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { Phone, Mail } from "lucide-react";
+import { Phone, Mail, Smartphone } from "lucide-react";
 import { buildWhatsHref, CONTACT, onlyDigits, type Social } from "@/lib/contact";
 
 type Props = {
   title?: string;
   subtitle?: string;
   phone?: string;
+  alternativePhone?: string;
   whatsapp?: string;
   email?: string;
   socials?: Social[];
@@ -19,6 +20,7 @@ export default function SectionContato({
   title = "Ficou com alguma dúvida? Fale conosco!",
   subtitle = "Entre em contato pelo WhatsApp ou, se preferir, envie um e-mail.",
   phone = CONTACT.phone,
+  alternativePhone = CONTACT.alternativePhone,
   whatsapp = CONTACT.whatsapp,
   email = CONTACT.email,
   socials = CONTACT.socials,
@@ -49,6 +51,13 @@ export default function SectionContato({
             <div className="flex items-center gap-3">
               <Mail className="h-5 w-5 text-gray-500" />
               <a href={`mailto:${email}`} className="hover:underline">{email}</a>
+            </div>
+            <div className="flex items-center gap-3">
+              <Smartphone className="h-5 w-5 text-gray-500" />
+              <span>
+                <span className="text-gray-500">Contato alternativo:</span>{" "}
+                <a href={`tel:+55${onlyDigits(alternativePhone)}`} className="hover:underline">{alternativePhone}</a>
+              </span>
             </div>
           </div>
           <div className="mt-10">

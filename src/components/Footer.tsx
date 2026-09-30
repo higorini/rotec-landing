@@ -1,4 +1,4 @@
-import { Building2, Clock, Droplets, Factory, Mail, MapPin, MessageCircle, Phone, Siren } from "lucide-react";
+import { Building2, Clock, Droplets, Factory, Mail, MapPin, MessageCircle, Phone, Siren, Smartphone } from "lucide-react";
 import { buildWhatsHref, CONTACT } from "@/lib/contact";
 
 const ICON = "h-4 w-4 shrink-0";
@@ -34,6 +34,11 @@ export default function Footer() {
                     className="inline-flex items-center gap-2 hover:opacity-100 transition-opacity"
                   >
                     <MessageCircle aria-hidden className={ICON} />{CONTACT.whatsappDisplay}
+                  </a>
+                </li>
+                <li>
+                  <a href={CONTACT.alternativePhoneHref} className="inline-flex items-center gap-2 hover:opacity-100 transition-opacity">
+                    <Smartphone aria-hidden className={ICON} />Contato alternativo: {CONTACT.alternativePhone}
                   </a>
                 </li>
                 <li>

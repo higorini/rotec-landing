@@ -10,12 +10,16 @@ describe("Footer", () => {
     expect(screen.getByRole("link", { name: CONTACT.phone })).toHaveAttribute("href", CONTACT.phoneHref);
     expect(screen.getByRole("link", { name: CONTACT.whatsappDisplay })).toHaveAttribute("href", buildWhatsHref());
     expect(screen.getByRole("link", { name: CONTACT.email })).toHaveAttribute("href", CONTACT.emailHref);
+    expect(screen.getByRole("link", { name: `Contato alternativo: ${CONTACT.alternativePhone}` })).toHaveAttribute(
+      "href",
+      CONTACT.alternativePhoneHref
+    );
   });
 
   it("uses icons instead of emojis", () => {
     const { container } = render(<Footer />);
 
     expect(container.textContent).not.toMatch(/\p{Emoji_Presentation}|\uFE0F/u);
-    expect(container.querySelectorAll("svg.lucide")).toHaveLength(9);
+    expect(container.querySelectorAll("svg.lucide")).toHaveLength(10);
   });
 });
