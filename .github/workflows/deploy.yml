@@ -1,0 +1,51 @@
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci --no-audit --no-fund
+      - run: npm run lint
+      - run: npx tsc --noEmit
+      - run: npm run test --if-present
+      - run: npm run build
+
+  deploy:
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: Production
+      url: https://www.rotecservice.com.br
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure SSH
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+
+      - name: Deploy
+        run: ssh -i ~/.ssh/deploy_key -o ServerAliveInterval=30 -o ServerAliveCountMax=4 "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" "bash -s -- ${{ github.sha }}" < scripts/deploy.sh
+
+      - name: Check site
+        run: curl -fsS -o /dev/null -w '%{http_code}\n' https://www.rotecservice.com.br/
