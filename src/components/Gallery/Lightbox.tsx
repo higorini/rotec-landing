@@ -111,7 +111,7 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
     >
       <button
         aria-label="Fechar"
-        onClick={onClose}
+        onClick={(e) => { e.stopPropagation(); onClose(); }}
         className="absolute top-4 right-4 rounded-full border w-10 h-10 grid place-items-center text-secondary hover:text-white transition"
       >
         ✕

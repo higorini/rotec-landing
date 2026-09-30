@@ -21,6 +21,20 @@ class ResizeObserverStub {
 
 globalThis.ResizeObserver ??= ResizeObserverStub as unknown as typeof ResizeObserver;
 
+window.matchMedia ??= (query: string) => {
+  const maxWidth = Number(/max-width:\s*(\d+)px/.exec(query)?.[1] ?? Infinity);
+  return {
+    matches: window.innerWidth <= maxWidth,
+    media: query,
+    onchange: null,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    addListener: () => {},
+    removeListener: () => {},
+    dispatchEvent: () => false,
+  } as MediaQueryList;
+};
+
 afterEach(() => {
   cleanup();
   document.body.style.overflow = "";

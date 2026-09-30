@@ -1,27 +1,33 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import type { GalleryImage } from "../Gallery/types";
 
 type Props = {
   photos: GalleryImage[];
   onOpenLightbox?: (index: number) => void;
+  keyboardEnabled?: boolean;
 };
 
-export default function Carousel({ photos, onOpenLightbox }: Props) {
-  const [isMobile, setIsMobile] = useState(true);
+const MOBILE_QUERY = "(max-width: 767px)";
+
+function subscribeToMobile(onChange: () => void) {
+  const media = window.matchMedia(MOBILE_QUERY);
+  media.addEventListener("change", onChange);
+  return () => media.removeEventListener("change", onChange);
+}
+
+export default function Carousel({ photos, onOpenLightbox, keyboardEnabled = true }: Props) {
+  const isMobile = useSyncExternalStore(
+    subscribeToMobile,
+    () => window.matchMedia(MOBILE_QUERY).matches,
+    () => true
+  );
   const [page, setPage] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const transitionTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const draggingRef = useRef(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   const imagesPerPage = isMobile ? 1 : 4;
   const totalPages = Math.ceil(photos.length / imagesPerPage);
@@ -60,14 +66,14 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
   }, []);
 
   useEffect(() => {
-    if (isMobile) return;
+    if (isMobile || !keyboardEnabled) return;
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") next();
       if (e.key === "ArrowLeft") prev();
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [isMobile, next, prev]);
+  }, [isMobile, keyboardEnabled, next, prev]);
 
   const startXRef = useRef(0);
   const onPointerDown = (e: React.PointerEvent) => {
@@ -86,6 +92,10 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
     else if (deltaX < -threshold) next();
   };
 
+  const onPointerCancel = () => {
+    draggingRef.current = false;
+  };
+
   const startIdx = page * imagesPerPage;
   const displayPhotos = photos.slice(startIdx, startIdx + imagesPerPage);
 
@@ -99,9 +109,10 @@ export default function Carousel({ photos, onOpenLightbox }: Props) {
   return (
     <div className="space-y-6">
       <div
-        className="overflow-hidden rounded-2xl"
+        className="overflow-hidden rounded-2xl touch-pan-y"
         onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
+        onPointerCancel={onPointerCancel}
       >
         <div
           className={`grid gap-3 sm:gap-4 ${

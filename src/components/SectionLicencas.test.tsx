@@ -24,4 +24,14 @@ describe("SectionLicencas", () => {
     expect(screen.queryByText(/papel ambiental da empresa/)).not.toBeInTheDocument();
     expect(document.body.style.overflow).toBe("");
   });
+
+  it("opens the agency details as an accessible dialog that closes with Escape", () => {
+    render(<SectionLicencas />);
+
+    fireEvent.click(screen.getByRole("button", { name: /SABESP/ }));
+    expect(screen.getByRole("dialog", { name: "SABESP" })).toBeInTheDocument();
+
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
 });

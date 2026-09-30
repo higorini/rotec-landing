@@ -36,6 +36,82 @@ test.describe("home", () => {
     }
   });
 
+  test("has unique element ids", async ({ page }) => {
+    const duplicated = await page.evaluate(() => {
+      const ids = Array.from(document.querySelectorAll("[id]"), (element) => element.id);
+      return ids.filter((id, index) => ids.indexOf(id) !== index);
+    });
+
+    expect(duplicated).toEqual([]);
+  });
+
+  test("keeps section titles below the sticky header after navigating", async ({ page }) => {
+    const headerHeight = await page.locator("header").first().evaluate((header) => header.getBoundingClientRect().height);
+
+    for (const id of ["servicos", "faq", "equipamento", "clientes", "licencas", "contato"]) {
+      await page.evaluate((target) => {
+        document.documentElement.style.scrollBehavior = "auto";
+        location.hash = "";
+        location.hash = target;
+      }, id);
+      const top = await page
+        .locator(`#${id} h2`)
+        .first()
+        .evaluate((heading) => heading.getBoundingClientRect().top);
+
+      expect(top, id).toBeGreaterThanOrEqual(headerHeight);
+    }
+  });
+
+  test("keeps FAQ answers fully visible after resizing", async ({ page }) => {
+    await page.getByRole("button", { name: /Desentupimento — Como funciona/ }).click();
+    await page.waitForTimeout(400);
+    await page.setViewportSize({ width: 320, height: 800 });
+    await page.waitForTimeout(400);
+
+    const list = page.locator("#faq ol").first();
+    const { panel, content } = await list.evaluate((element) => {
+      const listBox = element.getBoundingClientRect();
+      let panelElement = element.parentElement!;
+      while (panelElement && getComputedStyle(panelElement).overflow !== "hidden") {
+        panelElement = panelElement.parentElement!;
+      }
+      return { panel: panelElement.getBoundingClientRect().bottom, content: listBox.bottom };
+    });
+
+    expect(panel).toBeGreaterThanOrEqual(content);
+  });
+
+  test("scrolls client logos seamlessly", async ({ page }) => {
+    const track = page.locator("#clientes .marquee-track");
+    await expect(track).toHaveCount(1);
+
+    const { trackWidth, viewportWidth, end } = await track.evaluate((element) => {
+      const keyframes = element.getAnimations()[0]?.effect instanceof KeyframeEffect
+        ? (element.getAnimations()[0].effect as KeyframeEffect).getKeyframes()
+        : [];
+      return {
+        trackWidth: element.scrollWidth,
+        viewportWidth: element.parentElement!.clientWidth,
+        end: keyframes.at(-1)?.transform,
+      };
+    });
+
+    expect(trackWidth).toBeGreaterThan(viewportWidth);
+    expect(end).toMatch(/^translateX?\(-50%\)$/);
+  });
+
+  test("stops the client logos for reduced motion", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+
+    const animationName = await page
+      .locator("#clientes .marquee-track")
+      .first()
+      .evaluate((element) => getComputedStyle(element).animationName);
+
+    expect(animationName).toBe("none");
+  });
+
   test("opens and closes the service details", async ({ page }) => {
     await page.getByRole("button", { name: "Abrir informações de Desentupimento" }).click();
     await expect(page.getByRole("dialog", { name: "Desentupimento" })).toBeVisible();

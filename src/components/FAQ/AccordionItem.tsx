@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import type { FaqItem } from "./faq.data";
 
 type Props = {
@@ -10,18 +9,6 @@ type Props = {
 };
 
 export default function AccordionItem({ item, open, onToggle }: Props) {
-  const panelRef = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState(0);
-
-  
-  useEffect(() => {
-    const el = panelRef.current;
-    if (!el) return;
-    
-    const content = el.querySelector("[data-acc-content]") as HTMLElement | null;
-    setHeight(content ? content.offsetHeight : 0);
-  }, [open]);
-
   return (
     <div className="rounded-2xl border shadow-[var(--shadow-soft)] bg-white">
       <button
@@ -42,18 +29,19 @@ export default function AccordionItem({ item, open, onToggle }: Props) {
         </span>
       </button>
 
-      
+
       <div
-        ref={panelRef}
-        style={{ height: open ? height : 0 }}
-        className="overflow-hidden transition-[height] duration-300 ease-out"
+        style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
+        className="grid transition-[grid-template-rows] duration-300 ease-out"
       >
-        <div data-acc-content className="px-5 pb-5">
-          <ol className="list-decimal ml-5 space-y-1 text-sm sm:text-base">
-            {item.steps.map((step) => (
-              <li key={step}>{step}</li>
-            ))}
-          </ol>
+        <div className="overflow-hidden">
+          <div className="px-5 pb-5">
+            <ol className="list-decimal ml-5 space-y-1 text-sm sm:text-base">
+              {item.steps.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ol>
+          </div>
         </div>
       </div>
     </div>

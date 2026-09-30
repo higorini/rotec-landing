@@ -10,6 +10,12 @@ describe("About", () => {
     expect(container.querySelector(".fade-in h2")).toHaveTextContent("SOBRE A EMPRESA");
   });
 
+  it("hides the measuring copy of the tabs from assistive technology", () => {
+    render(<About />);
+
+    expect(screen.getAllByRole("heading", { level: 2 })).toHaveLength(1);
+  });
+
   it("switches content when another tab is selected", () => {
     const { container } = render(<About />);
 

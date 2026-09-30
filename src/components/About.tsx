@@ -174,7 +174,7 @@ export default function AboutTabs() {
             </div>
           </div>
 
-          <div className="measure-bank">
+          <div className="measure-bank" aria-hidden inert>
             {TABS.map((tab) => (
               <div key={`bank-${tab.id}`} ref={setBankRef(tab.id)} className="mx-auto">
                 <h2 className="font-display text-3xl sm:text-4xl text-slate-900 mb-6">

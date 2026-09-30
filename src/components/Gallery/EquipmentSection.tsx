@@ -26,6 +26,7 @@ export default function EquipmentSection() {
         <div className="mt-8 sm:mt-10 max-w-7xl mx-auto">
           <Carousel
             photos={EQUIPMENT_PHOTOS}
+            keyboardEnabled={!open}
             onOpenLightbox={(i) => {
               setIndex(i);
               setOpen(true);

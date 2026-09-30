@@ -85,6 +85,6 @@ describe("Lightbox", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Fechar" }));
 
-    expect(onClose).toHaveBeenCalled();
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 });

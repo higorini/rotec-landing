@@ -52,6 +52,20 @@
 /* Reset padrão */
 html {
   scroll-behavior: smooth;
+
+  --header-offset: 5rem;
+}
+
+@media (width >= 40rem) {
+  html {
+    --header-offset: 6rem;
+  }
+}
+
+@media (width >= 64rem) {
+  html {
+    --header-offset: 7rem;
+  }
 }
 
 button {
@@ -118,11 +132,18 @@ button {
 
   /* Marquee (scroll contínuo) */
   .marquee-track {
-    animation: marquee 40s linear infinite;
+    animation: marquee 105s linear infinite;
   }
+}
 
-  .marquee-ghost {
-    transform: translateX(100%);
+/* Âncoras abaixo do header fixo */
+section[id] {
+  scroll-margin-top: var(--header-offset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
   }
 }
 
@@ -143,6 +164,6 @@ button {
     transform: translateX(0);
   }
   to {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
 }

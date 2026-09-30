@@ -70,6 +70,18 @@ describe("Carousel", () => {
     expect(onOpenLightbox).toHaveBeenCalledWith(5);
   });
 
+  it("keeps opening photos after an interrupted drag", () => {
+    const onOpenLightbox = vi.fn();
+    const { container } = render(<Carousel photos={PHOTOS} onOpenLightbox={onOpenLightbox} />);
+    const track = container.querySelector(".overflow-hidden")!;
+
+    fireEvent.pointerDown(track, { clientX: 100, pointerType: "touch" });
+    fireEvent.pointerCancel(track, { clientX: 100, pointerType: "touch" });
+    fireEvent.click(screen.getByRole("button", { name: "Ampliar imagem: Foto 1" }));
+
+    expect(onOpenLightbox).toHaveBeenCalledWith(1);
+  });
+
   it("shows one photo per page on mobile", () => {
     window.innerWidth = 390;
     const { container } = render(<Carousel photos={PHOTOS} />);

@@ -19,50 +19,30 @@ export default function Page() {
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
         <About />
-
-        <section id="servicos" className="">
-          <div className="space-y-16">
-            <Services />
-          </div>
-        </section>
-
-        <section id="faq" className="">
-          <FAQSection />
-        </section>
-
-        <section id="galeria" className="">
-          <EquipmentSection />
-        </section>
-
-        <section id="clientes" className="">
-          <ClientsSection />
-        </section>
-
-        <section id="licencas" className="">
-          <SectionLicencas />
-        </section>
-
-        <section id="contato" className="">
-          <SectionContato
-            phone="(11) 4195-9000"
-            whatsapp="5511947850224"
-            email="rotec@rotecservice.com.br"
-            socials={[
-              { 
-                name: "Instagram", 
-                href: "https://www.instagram.com/rotecservice/", 
-                iconPath: "/images/redes/instagram.svg" 
-              },
-              { 
-                name: "LinkedIn", 
-                href: "https://www.linkedin.com/company/rotecservice/", 
-                iconPath: "/images/redes/linkedin.svg" 
-              }
-            ]}
-            whatsMessage="Olá! Vim pelo site da ROTEC e gostaria de um orçamento."
-            pepeSrc="/images/mascotes/pepe.svg"
-          />
-        </section>
+        <Services />
+        <FAQSection />
+        <EquipmentSection />
+        <ClientsSection />
+        <SectionLicencas />
+        <SectionContato
+          phone="(11) 4195-9000"
+          whatsapp="5511947850224"
+          email="rotec@rotecservice.com.br"
+          socials={[
+            {
+              name: "Instagram",
+              href: "https://www.instagram.com/rotecservice/",
+              iconPath: "/images/redes/instagram.svg"
+            },
+            {
+              name: "LinkedIn",
+              href: "https://www.linkedin.com/company/rotecservice/",
+              iconPath: "/images/redes/linkedin.svg"
+            }
+          ]}
+          whatsMessage="Olá! Vim pelo site da ROTEC e gostaria de um orçamento."
+          pepeSrc="/images/mascotes/pepe.svg"
+        />
       </main>
       <Footer />
     </>

@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
+import Modal from "@/components/shared/Modal";
 
 type LicencaKey = "IBAMA" | "CETESB" | "SABESP";
 
@@ -35,18 +36,9 @@ const LICENCAS: Record<
 export default function SectionLicencas() {
   const [open, setOpen] = useState<LicencaKey | null>(null);
 
-  
-  useEffect(() => {
-    if (!open) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [open]);
-
   return (
-    <section className="full-bleed isolate overflow-hidden bg-primary text-white">
+    <>
+    <section id="licencas" className="full-bleed isolate overflow-hidden bg-primary text-white">
         <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-10 px-6 py-20 md:grid-cols-2 md:gap-16 lg:py-28">
             
             <div className="flex flex-col items-start justify-center">
@@ -114,43 +106,30 @@ export default function SectionLicencas() {
                 </ul>
             </div>
         </div>
-
-        {open && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
-            onClick={() => setOpen(null)}
-          >
-            <div
-              className="relative max-w-2xl w-full bg-white rounded-2xl shadow-2xl p-6 sm:p-8"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                onClick={() => setOpen(null)}
-                className="absolute top-4 right-4 rounded-full border w-9 h-9 grid place-items-center hover:bg-gray-100 transition"
-                aria-label="Fechar"
-              >
-                ✕
-              </button>
-
-              <div className="flex flex-col items-center text-center">
-                <div className="relative aspect-square w-32 mb-6">
-                  <Image
-                    src={LICENCAS[open].logo}
-                    alt={LICENCAS[open].alt}
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <h3 className="text-3xl font-bold text-zinc-900 mb-4">
-                  {LICENCAS[open].title}
-                </h3>
-                <p className="text-zinc-700 leading-relaxed max-w-xl">
-                  {LICENCAS[open].resumo}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
     </section>
+
+    <Modal
+      open={open !== null}
+      onClose={() => setOpen(null)}
+      title={open ? LICENCAS[open].title : undefined}
+      size="xl"
+    >
+      {open && (
+        <div className="flex flex-col items-center text-center">
+          <div className="relative aspect-square w-32 mb-6">
+            <Image
+              src={LICENCAS[open].logo}
+              alt={LICENCAS[open].alt}
+              fill
+              className="object-contain"
+            />
+          </div>
+          <p className="text-zinc-700 leading-relaxed max-w-xl">
+            {LICENCAS[open].resumo}
+          </p>
+        </div>
+      )}
+    </Modal>
+    </>
   );
 }
