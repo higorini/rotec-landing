@@ -1,25 +1,35 @@
 import type { Metadata } from "next";
-import { Alexandria, Bebas_Neue, Karantina } from "next/font/google";
+import localFont from "next/font/local";
 import { GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
 import StructuredData from "@/components/StructuredData";
 
-const alexandria = Alexandria({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
+const alexandria = localFont({
+  src: [
+    { path: "./fonts/alexandria.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/alexandria.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/alexandria.woff2", weight: "700", style: "normal" },
+  ],
   variable: "--font-alexandria",
+  display: "swap",
 });
 
-const bebasNeue = Bebas_Neue({
-  subsets: ["latin"],
+const bebasNeue = localFont({
+  src: "./fonts/bebas-neue-400.woff2",
   weight: "400",
+  style: "normal",
   variable: "--font-bebas-neue",
+  display: "swap",
 });
 
-const karantina = Karantina({
-  subsets: ["latin"],
-  weight: ["300", "400", "700"],
+const karantina = localFont({
+  src: [
+    { path: "./fonts/karantina-300.woff2", weight: "300", style: "normal" },
+    { path: "./fonts/karantina-400.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/karantina-700.woff2", weight: "700", style: "normal" },
+  ],
   variable: "--font-karantina",
+  display: "swap",
 });
 
 const GTM_ID = "GTM-MKWC6JHW";

@@ -55,7 +55,7 @@ test.describe("design", () => {
   test("uses the body typeface in the contact title", async ({ page }) => {
     const fontFamily = await page.locator("#contato h2").evaluate((heading) => getComputedStyle(heading).fontFamily);
 
-    expect(fontFamily).toMatch(/Alexandria/);
+    expect(fontFamily).toMatch(/alexandria/i);
   });
 
   test("aligns licenses and contact with the rest of the page", async ({ page }, testInfo) => {

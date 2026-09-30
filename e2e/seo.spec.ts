@@ -48,7 +48,12 @@ test.describe("seo and performance", () => {
     await page.goto("/", { waitUntil: "networkidle" });
 
     expect(googleFonts).toEqual([]);
-    expect(await page.evaluate(() => getComputedStyle(document.body).fontFamily)).toMatch(/Alexandria/);
+    expect(await page.evaluate(() => getComputedStyle(document.body).fontFamily)).toMatch(/alexandria/i);
+    const loaded = await page.evaluate(async () => {
+      await document.fonts.ready;
+      return [...document.fonts].filter((font) => font.status === "loaded").map((font) => font.family.replace(/"/g, ""));
+    });
+    expect(loaded).toEqual(expect.arrayContaining(["alexandria", "bebasNeue", "karantina"]));
   });
 
   test("starts Google Tag Manager", async ({ page }) => {
