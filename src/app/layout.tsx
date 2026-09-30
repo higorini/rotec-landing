@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     siteName: "ROTEC Service",
     images: [
       {
-        url: "/images/hero.jpg",
+        url: "/images/og.jpg",
         width: 1200,
         height: 630,
         alt: "ROTEC Service - Desentupimento e Hidrojateamento",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     title: "ROTEC Service — Desentupimento e Hidrojateamento desde 1993",
     description:
       "Soluções em desentupimento, hidrojateamento de alta pressão e auto vácuo em Barueri e Grande São Paulo.",
-    images: ["/images/hero.jpg"],
+    images: ["/images/og.jpg"],
   },
   robots: {
     index: true,
