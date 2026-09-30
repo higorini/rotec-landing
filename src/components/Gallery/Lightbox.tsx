@@ -14,8 +14,15 @@ type Props = {
 
 export default function Lightbox({ open, index, photos, onClose, onIndex }: Props) {
   const [dragX, setDragX] = useState<number | null>(null);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(open);
+  const [shownKey, setShownKey] = useState(`${open}-${index}`);
   const startRef = useRef(0);
+
+  const currentKey = `${open}-${index}`;
+  if (shownKey !== currentKey) {
+    setShownKey(currentKey);
+    setIsTransitioning(open);
+  }
 
   const idxRef = useRef(index);
   const lenRef = useRef(photos.length);
@@ -26,11 +33,10 @@ export default function Lightbox({ open, index, photos, onClose, onIndex }: Prop
   useEffect(() => { onIndexRef.current = onIndex; }, [onIndex]);
 
   useEffect(() => {
-    if (!open) return;
-    setIsTransitioning(true);
+    if (!isTransitioning) return;
     const timer = setTimeout(() => setIsTransitioning(false), 150);
     return () => clearTimeout(timer);
-  }, [index, open]);
+  }, [isTransitioning, shownKey]);
 
   const next = useCallback(() => {
     const len = lenRef.current || 1;

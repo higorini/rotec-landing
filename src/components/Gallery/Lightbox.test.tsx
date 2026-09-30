@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import Lightbox from "./Lightbox";
 import type { GalleryImage } from "./types";
@@ -51,6 +51,25 @@ describe("Lightbox", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Anterior" }));
     expect(onIndex).toHaveBeenLastCalledWith(1);
+  });
+
+  it("fades the photo in when it changes", () => {
+    vi.useFakeTimers();
+    const { rerender } = renderLightbox(0);
+
+    act(() => {
+      vi.advanceTimersByTime(150);
+    });
+    expect(screen.getByRole("img", { name: "Foto A" })).toHaveStyle({ opacity: "1" });
+
+    rerender(<Lightbox open index={1} photos={PHOTOS} onClose={vi.fn()} onIndex={vi.fn()} />);
+    expect(screen.getByRole("img", { name: "Foto B" })).toHaveStyle({ opacity: "0" });
+
+    act(() => {
+      vi.advanceTimersByTime(150);
+    });
+    expect(screen.getByRole("img", { name: "Foto B" })).toHaveStyle({ opacity: "1" });
+    vi.useRealTimers();
   });
 
   it("closes with Escape", () => {
