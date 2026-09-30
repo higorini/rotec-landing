@@ -21,10 +21,21 @@ class ResizeObserverStub {
 
 globalThis.ResizeObserver ??= ResizeObserverStub as unknown as typeof ResizeObserver;
 
+class IntersectionObserverStub {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+  takeRecords() {
+    return [];
+  }
+}
+
+globalThis.IntersectionObserver ??= IntersectionObserverStub as unknown as typeof IntersectionObserver;
+
 window.matchMedia ??= (query: string) => {
-  const maxWidth = Number(/max-width:\s*(\d+)px/.exec(query)?.[1] ?? Infinity);
+  const maxWidth = /max-width:\s*(\d+)px/.exec(query)?.[1];
   return {
-    matches: window.innerWidth <= maxWidth,
+    matches: maxWidth ? window.innerWidth <= Number(maxWidth) : false,
     media: query,
     onchange: null,
     addEventListener: () => {},

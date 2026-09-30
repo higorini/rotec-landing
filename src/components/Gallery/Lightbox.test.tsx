@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import Lightbox from "./Lightbox";
 import type { GalleryImage } from "./types";
@@ -23,53 +23,24 @@ describe("Lightbox", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("shows the selected photo and locks page scroll", () => {
+  it("shows every photo, the counter of the selected one and locks page scroll", () => {
     const { unmount } = renderLightbox(1);
 
-    expect(screen.getByRole("img", { name: "Foto B" })).toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: "Foto ampliada" })).toBeInTheDocument();
+    PHOTOS.forEach((photo) => expect(screen.getByRole("img", { name: photo.alt })).toBeInTheDocument());
+    expect(screen.getByText("2 / 3")).toBeInTheDocument();
     expect(document.body.style.overflow).toBe("hidden");
 
     unmount();
     expect(document.body.style.overflow).toBe("");
   });
 
-  it("navigates with the keyboard and wraps around", () => {
-    const { onIndex } = renderLightbox(0);
+  it("highlights the thumbnail of the selected photo", () => {
+    renderLightbox(2);
 
-    fireEvent.keyDown(document, { key: "ArrowRight" });
-    expect(onIndex).toHaveBeenLastCalledWith(1);
-
-    fireEvent.keyDown(document, { key: "ArrowLeft" });
-    expect(onIndex).toHaveBeenLastCalledWith(2);
-  });
-
-  it("navigates with the arrow buttons", () => {
-    const { onIndex } = renderLightbox(2);
-
-    fireEvent.click(screen.getByRole("button", { name: "Próxima" }));
-    expect(onIndex).toHaveBeenLastCalledWith(0);
-
-    fireEvent.click(screen.getByRole("button", { name: "Anterior" }));
-    expect(onIndex).toHaveBeenLastCalledWith(1);
-  });
-
-  it("fades the photo in when it changes", () => {
-    vi.useFakeTimers();
-    const { rerender } = renderLightbox(0);
-
-    act(() => {
-      vi.advanceTimersByTime(150);
-    });
-    expect(screen.getByRole("img", { name: "Foto A" })).toHaveStyle({ opacity: "1" });
-
-    rerender(<Lightbox open index={1} photos={PHOTOS} onClose={vi.fn()} onIndex={vi.fn()} />);
-    expect(screen.getByRole("img", { name: "Foto B" })).toHaveStyle({ opacity: "0" });
-
-    act(() => {
-      vi.advanceTimersByTime(150);
-    });
-    expect(screen.getByRole("img", { name: "Foto B" })).toHaveStyle({ opacity: "1" });
-    vi.useRealTimers();
+    expect(screen.getAllByRole("button", { name: /Ver foto/ })).toHaveLength(3);
+    expect(screen.getByRole("button", { name: "Ver foto 3" })).toHaveAttribute("aria-current", "true");
+    expect(screen.getByRole("button", { name: "Ver foto 1" })).toHaveAttribute("aria-current", "false");
   });
 
   it("closes with Escape", () => {
@@ -80,11 +51,21 @@ describe("Lightbox", () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  it("closes with the close button", () => {
+  it("closes once with the close button", () => {
     const { onClose } = renderLightbox();
 
     fireEvent.click(screen.getByRole("button", { name: "Fechar" }));
 
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("closes when clicking outside the photo but not on it", () => {
+    const { onClose } = renderLightbox();
+
+    fireEvent.click(screen.getByRole("img", { name: "Foto A" }));
+    expect(onClose).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole("dialog"));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 });

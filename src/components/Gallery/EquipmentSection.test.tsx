@@ -1,27 +1,17 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 import EquipmentSection from "./EquipmentSection";
 import { EQUIPMENT_PHOTOS } from "./gallery.data";
 
 describe("EquipmentSection", () => {
-  beforeEach(() => {
-    vi.useFakeTimers();
-    window.innerWidth = 1440;
-  });
-
-  afterEach(() => {
-    vi.useRealTimers();
-  });
-
-  it("does not move the carousel while the lightbox handles the arrow keys", () => {
+  it("opens the clicked photo in the lightbox and closes it", () => {
     render(<EquipmentSection />);
 
-    fireEvent.click(screen.getByRole("button", { name: `Ampliar imagem: ${EQUIPMENT_PHOTOS[0].alt}` }));
-    fireEvent.keyDown(document, { key: "ArrowRight" });
-    act(() => {
-      vi.advanceTimersByTime(300);
-    });
+    fireEvent.click(screen.getByRole("button", { name: `Ampliar imagem: ${EQUIPMENT_PHOTOS[4].alt}` }));
+    expect(screen.getByRole("dialog", { name: "Foto ampliada" })).toBeInTheDocument();
+    expect(screen.getByText(`5 / ${EQUIPMENT_PHOTOS.length}`)).toBeInTheDocument();
 
-    expect(screen.getByRole("button", { name: "Ir para página 1" })).toHaveClass("bg-primary");
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 });

@@ -99,7 +99,7 @@ test.describe("design on mobile", () => {
   });
 
   test("keeps the carousel arrows round", async ({ page }) => {
-    const box = await page.getByRole("button", { name: "Próxima página" }).boundingBox();
+    const box = await page.getByRole("button", { name: "Próxima foto" }).boundingBox();
 
     expect(Math.round(box!.width)).toBe(Math.round(box!.height));
   });

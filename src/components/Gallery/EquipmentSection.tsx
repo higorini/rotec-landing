@@ -19,7 +19,7 @@ export default function EquipmentSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
         <SectionHeader
           title="NOSSO EQUIPAMENTO"
-          subtitle="Arraste para o lado no celular. Em telas maiores, clique para ampliar."
+          subtitle="Arraste para o lado ou toque na foto para ampliar."
           maxWidth="lg"
           tone="light"
         />
@@ -27,7 +27,7 @@ export default function EquipmentSection() {
         <div className="mt-8 sm:mt-10 max-w-7xl mx-auto">
           <Carousel
             photos={EQUIPMENT_PHOTOS}
-            keyboardEnabled={!open}
+            paused={open}
             onOpenLightbox={(i) => {
               setIndex(i);
               setOpen(true);
